@@ -1,0 +1,40 @@
+.position-tools{
+    background: #ffffff;
+    border-top: 0.5px solid #d4d4d4;
+    border-bottom: 0.5px solid #d4d4d4;
+    .tools-item{
+        height: 90px;
+        line-height: 90px;
+        color: #333;
+        font-size:30px;
+        padding-left: 32px;
+        position: relative;
+        text-align: left;
+        background-color:#fff;
+        .tools-img{
+            height: 34px;
+            width: 20px;
+            position: absolute;
+            right: 32px;
+            top: 40px;
+        }
+        .item-title{
+            background: #fff;
+            color: #333;
+            font-size: 30px;
+            text-align: left;
+            padding: 0;
+            height: 90px;
+            line-height: 90px;
+            &:after{
+                border:0
+            }
+        }
+    }
+} 
+.trans-item {
+    height: 100px;
+    text-align: center;
+    line-height: 100px;
+    border: 0.5px solid #F5F6F7;
+}

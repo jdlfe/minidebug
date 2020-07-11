@@ -1,0 +1,44 @@
+.pin-container {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid #f6f6f6;
+  .appinfo-item {
+    display:flex;
+    align-items:center;
+    font-size: 32px;
+    color: #333;
+    justify-content:space-between;
+    padding:0 32px;
+    height:104px;
+    border-bottom:1px solid #efefef;
+    background: #ffffff;
+    .item-value {
+      flex: 1;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      text-align: right;
+    }
+  }
+  .appinfo-input {
+    font-size: 32px;
+    color: #333;
+    padding:0 32px;
+    height:104px;
+    border-bottom:1px solid #efefef;
+    background: #ffffff;
+  }
+  .confirm-button{
+    position: absolute;
+    bottom: 30px;
+    left: 30px;
+    width: 690px;
+    height: 100px;
+    background: #E1251B;
+    border: 0;
+    color:#ffffff;
+    text-align: center;
+    line-height: 100px;
+    font-size: 32px;
+  }
+}

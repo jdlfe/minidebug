@@ -1,0 +1,179 @@
+$storage-color: #E1251B;
+.storage-container {
+    padding: 40px;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    overflow: hidden;
+    position: fixed;
+    border-top: 1px solid #f6f6f6;
+    .mask {
+        position: fixed;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.6);
+        z-index: 10;
+    }
+    .storage-list {
+        overflow: auto;
+        height: 840px;
+        margin-top: 20px;
+    }
+    .header {
+        position: relative;
+        height: 88px;
+        .storage-manage{
+            position: absolute;
+            right: 0;
+            top: 20px;
+            image{
+                width: 40px;
+                height: 40px;
+            }
+         }
+         .operate-list{
+            position: absolute;
+            width: 240px;
+            font-size: 28px;
+            background: #fff;
+            box-sizing: border-box;
+            right: 0;
+            top: 92px;
+            z-index: 99;
+            .arrow {
+                position: absolute;
+                width: 0;
+                height: 0;
+                border: 16px solid;
+                border-color: transparent transparent #fff;
+                right: 10px;
+                top: -30px;    
+            }
+            .operate-item {
+                width: 100%;
+                height: 72px;
+                line-height: 72px;
+                border-bottom: 1px solid #efefef;
+                image {
+                    height: 40px;
+                    width: 40px;
+                    vertical-align: middle;
+                    margin-right: 20px;
+                    margin-left: 20px;
+                }
+            }
+        }
+
+    }
+    .storage-list-container {
+        margin-top: 30px;
+        .table-title{
+            overflow: hidden;
+            height: 68px;
+        }
+        .key-title{
+            width: 230px;
+            height: 68px;
+            float: left;
+            margin-right: 2px;
+            font-size: 28px;
+            line-height: 68px;
+            color: #fff;
+            border-radius: 16px 0 0 16px;
+            background: $storage-color;
+            text-align: center;
+        }
+        .value-title{
+            width: 430px;
+            float: left;
+            height: 68px;
+            font-size: 28px;
+            line-height: 68px;
+            color: #fff;
+            border-radius: 0 16px 16px 0;
+            background: $storage-color;
+            text-align: center;
+        }
+    }
+    .head-title{
+        font-size: 28px;
+    }
+    .storage-item {
+        display:flex;
+        flex-flow:row nowrap;
+        font-size: 24px;
+        height:80px;
+        line-height: 80px;
+        border-bottom: 1px solid #f6f6f6;
+        .storage-key{
+            flex: 2.6;
+            padding-left: 10px;
+        }
+        .storage-value{
+            flex: 6;
+            padding-left: 10px;
+            overflow: scroll;
+        }
+        .add-some-flex{
+            flex: 3.2
+        }
+    }
+    .clear-single-btn{
+        flex:0.5;
+        line-height:90px;
+        text-align: center;
+        image{
+            height:32px;
+            width: 32px;
+        }
+    }
+    .disabled {
+        color: #888;
+    }
+}
+.storage-footer {
+    position: fixed;
+    bottom: 30px;
+    left: 40px;
+    display: flex;
+    .operate-btn{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #fff;
+        color: $storage-color;
+        border: 1px solid $storage-color;
+        height: 88px;
+        width: 224px;
+        margin-right: 16px;
+        font-size: 34px;
+    }
+    .operate-btn-delete{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #D8D8D8;
+        color: #fff;
+        height: 88px;
+        width: 430px;
+        box-sizing: border-box;
+        &.delete-active{
+            background: $storage-color;
+        }
+        font-size: 34px;
+    }
+
+}
+.add-input-container {
+    margin-top: 20px;
+    .add-input {
+        width: 100%;
+        border: 0;
+        border-bottom: 1px solid #EEEEEE;
+        padding-bottom: 16px;
+        margin-top: 20px;
+    }
+}

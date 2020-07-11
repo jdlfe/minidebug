@@ -1,0 +1,78 @@
+$storage-color: #E1251B;
+$input-height: 380px;
+.container {
+    .url-area{
+        height: $input-height;
+        width: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: 1;
+    }
+    .input-box{
+        width: 100%;
+        border: 2px solid #efefef;
+        height: $input-height;
+        position: relative;
+    }
+    .scan{
+        position: absolute;
+        right: 32px;
+        bottom: 32px;
+        height: 56px;
+        width: 56px;
+        z-index: 99;
+    }
+    .scan image{
+        height: 56px;
+        width: 56px;
+    }
+    .history-list{
+        padding: 0 20px;
+    }
+    .history-content{
+        max-height: 600px;
+        overflow: auto;
+    }
+    .history-item {
+        height: 90px;
+        line-height: 90px;
+        padding-left: 57px;
+        position: relative;
+        font-size: 24px;
+        color: #333333;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        border-bottom: 2px solid #efefef;
+    }
+    .clear {
+        width: 100%;
+        text-align: center;
+        font-size: 24px;
+        margin-top: 40px;
+        height: 32px;
+        line-height: 32px;
+        color: #999;
+    }
+    .search {
+        height: 40px;
+        width: 40px;
+        position: absolute;
+        left: 0;
+        bottom: 23px;
+    }
+    .jump-btn {
+        position: absolute;
+        bottom: 30px;
+        left: 30px;
+        width: 690px;
+        height: 100px;
+        background: $storage-color;
+        border: 0;
+        color:#ffffff;
+        line-height: 100px;
+        font-size: 32px;
+        text-align: center;
+    }
+}
