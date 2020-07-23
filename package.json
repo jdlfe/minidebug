@@ -1,6 +1,6 @@
 {
   "name": "@jdwlfe/minidebug",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "private": false,
   "description": "小程序MiniDebug工具",
   "main": "src/index.ts",
