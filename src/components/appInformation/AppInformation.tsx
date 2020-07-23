@@ -1,50 +1,35 @@
-import { ComponentClass } from 'react'
-import Taro, { Component, } from '@tarojs/taro'
+import React, { Component } from 'react'
+import Taro from '@tarojs/taro'
+import { AtList, AtListItem } from 'taro-ui'
 import { View, Text, Image } from '@tarojs/components'
-import { TtList, TtListItem, } from '@pandora/tarot'
-
-import './AppInformation.scss'
-
 import { SystemInfoItem, } from '../../types/DebugTypes'
-
 import { transSystemInfo, transUserInfo, transAuthInfo } from '../../utils/util'
 
-type PageStateProps = {
-}
+type Props = {}
 
-type PageDispatchProps = {
-}
-
-type PageOwnProps = {}
-
-type PageState = {
-  systemInfoList: Array<SystemInfoItem>,
-  accountInfoList: Array<SystemInfoItem>,
-  userInfoList: Array<SystemInfoItem>,
+type State = {
+  systemInfoList: Array<SystemInfoItem>
+  accountInfoList: Array<SystemInfoItem>
+  userInfoList: Array<SystemInfoItem>
   authInfoList: Array<SystemInfoItem>
 }
 
-type IProps = PageStateProps & PageDispatchProps & PageOwnProps
-
-interface AppInformation {
-  props: IProps;
-}
-
-class AppInformation extends Component {
-  state = {
-    systemInfoList: [],
-    accountInfoList: [],
-    userInfoList: [],
-    authInfoList: [],
+export default class AppInformation extends Component<Props, State> {
+  constructor(props) {
+    super(props)
+    this.state = {
+      systemInfoList: [],
+      accountInfoList: [],
+      userInfoList: [],
+      authInfoList: [],
+    }
   }
-
-  componentDidMount() {
+  componentDidMount () {
     this.getSystemInfo()
     this.getAccountInfo()
     this.getUserInfo()
     this.getAuthInfo()
   }
-
   getSystemInfo = () => {
     Taro.getSystemInfo({
       success: res => {
@@ -88,63 +73,59 @@ class AppInformation extends Component {
         {systemInfoList.length > 0 && (
           <View className="info-header">系统信息</View>
         )}
-        <TtList>
+        <AtList>
           {systemInfoList.map((item: SystemInfoItem) => (
-            <TtListItem 
+            <AtListItem 
               key={item.name}
               title={item.name}
-              content={item.value + ''}
-              titleWidth={400}
+              note={item.value + ''}
             />
           ))}
-        </TtList>
+        </AtList>
         {accountInfoList.length > 0 && (
           <View className="info-header">账号信息</View>
         )}
-        <TtList>
+        <AtList>
           {accountInfoList.map((item: SystemInfoItem) => (
-            <TtListItem 
+            <AtListItem 
               key={item.name}
               title={item.name}
-              content={item.value + ''}
+              note={item.value + ''}
             />
           ))}
-        </TtList>
+        </AtList>
         {userInfoList.length > 0 && (
           <View className="info-header">用户信息</View>
         )}
-        <TtList>
-          {userInfoList.map((item: SystemInfoItem) => (
+        <AtList>
+          {userInfoList.map((item: SystemInfoItem, index: number) => (
             item.type === 'img' ? (
-              <View className="info-item">
+              <View className="info-item" key={`_${index}`}>
                 <Text className="title">{item.name}</Text>
-                <Image className="img" src={item.value}></Image>
+                <Image className="img" src={`${item.value}`}></Image>
               </View>
             ) : (
-              <TtListItem 
+              <AtListItem 
                 key={item.name}
                 title={item.name}
-                content={item.value + ''}
+                note={item.value + ''}
               />
             )
           ))}
-        </TtList>
+        </AtList>
         {authInfoList.length > 0 && (
           <View className="info-header">授权信息</View>
         )}
-        <TtList>
+        <AtList>
           {authInfoList.map((item: SystemInfoItem) => (
-            <TtListItem 
+            <AtListItem 
               key={item.name}
               title={item.name}
-              content={item.value + ''}
-              titleWidth={400}
+              note={item.value + ''}
             />
           ))}
-        </TtList>
+        </AtList>
       </View>
     )
   }
 }
-
-export default AppInformation as ComponentClass<PageOwnProps, PageState>

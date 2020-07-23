@@ -1,8 +1,7 @@
-import { ComponentClass } from 'react'
-import Taro, { Component, } from '@tarojs/taro'
-import { View, CoverImage, CoverView, } from '@tarojs/components'
-import { TtList, TtListItem, TtActionSheet, TtActionSheetItem, } from '@pandora/tarot'
-import './Debug.scss'
+import React, { Component } from 'react'
+import Taro from '@tarojs/taro'
+import { View, CoverView, CoverImage } from '@tarojs/components'
+import { AtList, AtListItem, AtActionSheet, AtActionSheetItem, } from 'taro-ui'
 import { Menu, ENV } from '../../types/DebugTypes'
 import { FEATURE, HOME_OPERATION_LIST, HOME_MENU, ENV_LIST } from '../../utils/consants'
 
@@ -14,13 +13,9 @@ import Storage from '../../components/storage/Storage'
 
 const app = Taro.getApp()
 
-type PageStateProps = {}
+type Props = {}
 
-type PageDispatchProps = {}
-
-type PageOwnProps = {}
-
-type PageState = {
+type State = {
   menuList: Array<Menu>
   envList: Array<ENV>
   showPopup: boolean
@@ -29,42 +24,39 @@ type PageState = {
   hideHomeMenu: boolean
 }
 
-type IProps = PageStateProps & PageDispatchProps & PageOwnProps
-
-interface Debug {
-  props: IProps;
-}
-
-class Debug extends Component {
-  state = {
-    menuList: HOME_MENU,
-    envList: ENV_LIST,
-    showPopup: false,
-    curEnv: '',
-    featureType: FEATURE.DEFAULT,
-    hideHomeMenu: false,
+export default class Debug extends Component<Props, State> {
+  constructor(props) {
+    super(props)
+    this.state = {
+      menuList: HOME_MENU,
+      envList: ENV_LIST,
+      showPopup: false,
+      curEnv: '',
+      featureType: FEATURE.DEFAULT,
+      hideHomeMenu: false,
+    }
   }
-
-  componentDidMount() {
+  componentDidMount () {
+    if (!app.globalData) {
+      app.globalData = {}
+    }
     const envEnum = Taro.getStorageSync('env')
     const envItem = this.state.envList.find(item => item.env === envEnum)
     this.setState({
       curEnv: envItem ? envItem.name : '',
     })
-    if (!app.initialLocation) {
+    if (!app.globalData.initialLocation) {
       Taro.getLocation({
         success: res => {
-          app.initialLocation = {
+          app.globalData.initialLocation = {
             latitude: res.latitude,
             longitude: res.longitude
           }
-          Taro.setStorageSync('location', app.initialLocation)
-          console.log('initialLocation', app.initialLocation)
+          Taro.setStorageSync('location', app.globalData.initialLocation)
         }
       })
     }
   }
-
   onUpdate = () => {
     const updateManager = Taro.getUpdateManager()
     updateManager.onCheckForUpdate(function(res) {
@@ -92,6 +84,7 @@ class Debug extends Component {
       // 新版本下载失败
     })
   }
+
   onChangeEnv = () => {
     this.showAddPopup()
   }
@@ -130,15 +123,12 @@ class Debug extends Component {
     } else if (type === FEATURE.UPDATE) {
       this.onUpdate()
     }
-
-
   }
-  handleChangeEnv = (e) => {
-    const { env } = e.currentTarget.dataset
+  handleChangeEnv = (env) => {
     Taro.setStorage({
       key: 'env',
       data: env,
-      success: res => {
+      success: () => {
         Taro.showModal({
           title: '提示',
           content: '环境设置成功，应用即将重启',
@@ -153,7 +143,7 @@ class Debug extends Component {
           }
         })
       },
-      complete: res => {
+      complete: () => {
         this.closeAll()
       }
     })
@@ -170,21 +160,20 @@ class Debug extends Component {
     const { menuList, showPopup, envList, curEnv, featureType, hideHomeMenu, } = this.state
     const showDebugMenu = HOME_OPERATION_LIST.indexOf(featureType) > -1
     return (
-      <View className="debug-container">
+      <View className='debug-container'>
         {!showDebugMenu && !hideHomeMenu && (
           <CoverView className='home-container'>
             <CoverImage
               className='home-img'
-              src={require('../../assets/img/home.png')}
-              onClick={e => { this.setState({ featureType: -1 }) }}
+              src={'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAFEklEQVR4Xu1aXYgcRRCumt23E25BRMQIkaigRo1ESfAHNhAOInrX1eve+SB5iQpBJREUFUUIin9wRoKK6D2cP/HBuZvuzaEigh6IETXBgBoQQwxKOFBzKCgRWaakYU7WzfTO7PzdXG4X7uWmq776vqmu7q4ehFX+w1XOHwYCDDJglSswmAKrPAEGRTC3KUBE6xHxfma+BxGfB4DPPM87ULaMy0UAKeVmZn4TAC7tIDyvlNpy1gsgpdwakL+gm6zv+1e3Wq1vyiRCphkghBCI+BYAnBNC8ohS6toykTexZCaAEOLOgHwYR2ZmqbXWZ6UAQoidiPiKhdw/zDxRRvKZZAARPQQApsqf8UPEvwBgwvO898r25pfiSTUFiGgPADxhIfcHADSVUh+VlXyqDCCiFwDgAQu535i5qbWeLzP5xAIQ0esAcJeF3EKlUrl9ZmbmYNnJ9y1AvV6v1mq1txFxwkLuZ0RseJ731Uog35cAQoia4zj7mfkWC7njzNzQWh9ZKeRjCyClXMPM7wDAzRZy3zuO05idnf1uJZGPJQARXQ4AhvyGZSC3yMyLjuOc8n3/MCLODQ8Pz09PT/+dVSyRy6CU8mlmfjQrwAz8/AoA77bb7cm5ubkf0/qLFICIOC1ITvYLiDjped5kGv+RAggh9plzfRqQnG0/rlar213XPZkEJ44A28zcA4BKEoCCbE4zc11r/WW/eJECGIdCCCOCKYQ1C4Bi5n39gscYvxERNwKA+bssajwzX6y1PhE1rvN5LAGMARHdFKwGF4UBMPOHtVpNZFmhO3GEEGvNUsvMz/XIxpPMvF5r/XtcEWILEIhwTSDCFRaAT41WSqlTcQPod5wQYgMivgYA14fZIqL2PI/i+u1LgGA6rAOA/Yi4yRLAoUql0nBd96e4QSQZJ4TYjYh7LTE8GHd16FsAAzg6Onq+4zjmTLDVEvxR3/ebrVbraBJycW2klKbrHFZ7Ftrt9o1x9gmJBDABjoyMDA0NDZn+ny3dTiDieN4HIyJ6HwC2hYj2slLqvigxEwuw5JiI3gCA7RagX4J2WG59gWazeUm73f4hBH+xWq2ucV33dC8RUgsQFMeXAOBeC9CfiHhHnm2xHlOhoZTychcgEOFZAHjYAuYjIuV1MySEWIeIx0Kwp5RSdxciQLBCPI6IT1oAc70ZIiIjgFmh/vsh4hee520uTIBAhF2I+GIYKDNvyatPSEQm1f9XkJn5mNa683rujLAyqQHdXqWUO5h5quv/h5VS10VV5aTPiegRAHimy35RKXVuoRmwBCalnGBmc2dg9vHzzLwnr7cfZF4dET/pJquU6vmSc8mAziCEEOaUltsy2LEclysDkqZyUrtS1YCkJNLYlWYVSEMiqW1p9gFJCaS163EyLG4nmJZEUvugP/B1iH1xZ4GkwWdhR0TfAsCVIb6KOQ1mQSKpDyHEFCLuCLHPvx+QNOis7KSUB5j5tjB/iJhvRygrEkn8ENGtAPAqAFxosXeVUuNxfee+E4wbSNS4oCs8HnSFbcM/V0rdEOWr83lsAcbGxq5CxJ4Hi36AY47t614gat8fOl2iAgm+/dsFAPWoscv1PM6x1xZbZAZIKfcy8+7lIhcD9wOllO2jjUjzSAGIyFxBr430VPyAYm6HiegxAHiqeH5WxGK/DzDnefO9HyI2AeC8goVY/i9ECiZcOFxkDSg8ooIBBwIULHjp4AYZULpXUnBAgwwoWPDSwf0LvhPSUKrDqO0AAAAASUVORK5CYII='}
+              onClick={() => { this.setState({ featureType: -1 }) }}
             ></CoverImage>
           </CoverView>
-
         )}
         {showDebugMenu && (
-          <TtList>
+          <AtList>
             {menuList.map(item => (
-              <TtListItem
+              <AtListItem
                 key={item.title}
                 title={item.title}
                 arrow="right"
@@ -192,25 +181,24 @@ class Debug extends Component {
                   e.currentTarget.dataset.item = item
                   this.handleMenuClicked(e)
                 }}
-                placeholder={item.title !== '环境切换' ? item.desc : (curEnv ? `当前环境：${curEnv}` : '环境切换')}
+                note={item.title !== '环境切换' ? item.desc : (curEnv ? `当前环境：${curEnv}` : '环境切换')}
                 hasBorder
               />
             ))}
-          </TtList>
+          </AtList>
         )}
-        <TtActionSheet isOpened={showPopup} onClose={this.closeAll} cancelText='取消' title='测试、预发、正式环境动态切换' >
+        <AtActionSheet isOpened={showPopup} onClose={this.closeAll} cancelText='取消' title='测试、预发、正式环境动态切换' >
           {envList.map(item => (
-            <TtActionSheetItem
+            <AtActionSheetItem
               key={item.env}
-              onClick={e => {
-                e.currentTarget.dataset.env = item.env
-                this.handleChangeEnv(e)
+              onClick={() => {
+                this.handleChangeEnv(item.env)
               }}
             >
               {item.name}
-            </TtActionSheetItem>
+            </AtActionSheetItem>
           ))}
-        </TtActionSheet>
+        </AtActionSheet>
 
         {featureType === FEATURE.CHANGE_PIN && (
           <ChangePin />
@@ -232,12 +220,3 @@ class Debug extends Component {
     )
   }
 }
-
-// #region 导出注意
-//
-// 经过上面的声明后需要将导出的 Taro.Component 子类修改为子类本身的 props 属性
-// 这样在使用这个子类时 Ts 才不会提示缺少 JSX 类型参数错误
-//
-// #endregion
-
-export default Debug as ComponentClass<PageOwnProps, PageState>

@@ -1,37 +1,25 @@
-import { ComponentClass } from 'react'
-import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Text, Input, Button, } from '@tarojs/components'
-
-import './ChangePin.scss'
+import React, { Component } from 'react'
+import Taro from '@tarojs/taro'
+import { View, Text, Input, Button } from '@tarojs/components'
 import { relaunch } from '../../utils/util'
 
 const app = Taro.getApp()
 
-type PageStateProps = {
-}
+type Props = {}
 
-type PageDispatchProps = {
-}
-
-type PageOwnProps = {}
-
-type PageState = {
+type State = {
   userPin: string
   inputPin: string
 }
 
-type IProps = PageStateProps & PageDispatchProps & PageOwnProps
-
-interface ChangePin {
-  props: IProps;
-}
-
-class ChangePin extends Component {
-  state = {
-    userPin: app.globalData.userPin,
-    inputPin: ''
+export default class ChangePin extends Component<Props, State> {
+  constructor(props) {
+    super(props)
+    this.state = {
+      userPin: app.globalData.userPin,
+      inputPin: '',
+    }
   }
-
   handleInput = (e) => {
     this.setState({
       inputPin: e.detail.value
@@ -57,5 +45,3 @@ class ChangePin extends Component {
     )
   }
 }
-
-export default ChangePin as ComponentClass<PageOwnProps, PageState>

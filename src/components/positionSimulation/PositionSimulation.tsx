@@ -1,43 +1,32 @@
-import { ComponentClass } from 'react'
-import { View, Button, Image, } from '@tarojs/components'
-import Taro, { Component, } from '@tarojs/taro'
-import { TtActionSheet, TtListItem, } from '@pandora/tarot'
-import './PositionSimulation.scss'
+import React, { Component } from 'react'
+import Taro from '@tarojs/taro'
+import { View, Image, Button } from '@tarojs/components'
+import { AtActionSheet, AtListItem } from 'taro-ui'
 import { relaunch, transformFromWGSToGCJ, transformFromGCJToWGS, } from '../../utils/util'
 import { TransTypeItem } from '../../types/DebugTypes'
 import { CONVERT_LIST } from '../../utils/consants'
 
 const app = Taro.getApp()
 
-type PageStateProps = {
-}
+type Props = {}
 
-type PageDispatchProps = {
-}
-
-type PageOwnProps = {}
-
-type PageState = {
+type State = {
   currentLatitude: number
   currentLongitude: number
   showPopup: boolean
   transTypeList: Array<TransTypeItem>
 }
 
-type IProps = PageStateProps & PageDispatchProps & PageOwnProps
-
-interface PositionSimulation {
-  props: IProps;
-}
-
-class PositionSimulation extends Component {
-  state = {
-    currentLatitude: 0,
-    currentLongitude: 0,
-    showPopup: false,
-    transTypeList: CONVERT_LIST
+export default class PositionSimulation extends Component<Props, State> {
+  constructor(props) {
+    super(props)
+    this.state = {
+      currentLatitude: 0,
+      currentLongitude: 0,
+      showPopup: false,
+      transTypeList: CONVERT_LIST
+    }
   }
-
   componentDidMount() {
     this.getMyPosition()
   }
@@ -46,11 +35,11 @@ class PositionSimulation extends Component {
     Taro.chooseLocation({
       success: res => {
         this.setState({ 
-          currentLatitude: res.latitude, 
-          currentLongitude: res.longitude 
+          currentLatitude: Number(res.latitude), 
+          currentLongitude: Number(res.longitude) 
         })
         Object.defineProperty(Taro, 'getLocation', {
-          get(val) {
+          get() {
             return function(obj) {
               obj.success({ latitude: res.latitude, longitude: res.longitude })
             }
@@ -87,9 +76,12 @@ class PositionSimulation extends Component {
   }
   resetPosition = () => {
     Object.defineProperty(Taro, 'getLocation', {
-      get(val) {
+      get() {
         return function(obj) {
-          obj.success({ latitude: app.initialLocation.latitude, longitude: app.initialLocation.longitude })
+          obj.success({
+            latitude: app.globalData.initialLocation.latitude,
+            longitude: app.globalData.initialLocation.longitude
+          })
         }
       }
     })
@@ -118,7 +110,7 @@ class PositionSimulation extends Component {
     })
   }
 
-  render() {
+  render () {
     const { showPopup, transTypeList, } = this.state
     return (
       <View className="position-tools">
@@ -128,22 +120,20 @@ class PositionSimulation extends Component {
           </Button>
           <Image
             className="tools-img"
-            src={require('../../assets/img/right-arrow.png')}
+            src={'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAbCAYAAAECMz80AAAAAXNSR0IArs4c6QAAAolJREFUOBGFlDuIE1EUhjOTiWvALpguSMAuQsijU7s0CqIoCBY+sBEUFAUXBVcUH7CixbKVWCiIK4harAiLzWIjFnlUsYkSMIKQGDCFxEec+J0hZ/bO7GwcmJxz/se55947u7GY+VSr1bE9AZZitVrtlcmGcsSvY/V6/aSPi90vzEQIRwBaLhM+lkolS4pbpspbGfClCYpqFn9dQEsZwFPj8fia1rHA0hsXooe9KwreB74/KkEwNxGumrw/hYKIzpIv8H4ql8vb1wlEyMgPGfmEZVnvvLMQUB6I5xCHSB/jXjNDrEzWv+Qpwz+NRmN/GPNrbuaKX0Qktuu6N6Q9j955QOYNIgJBk8nkTC6X+20qPJdOPBwOfzWbzS2mYG0roNqJdCumbyIMrKudwHsMv00EgQ4CyMO5uAxtOY6zI9BBSNmNkJKPRqMvgQ4QcdwjIVOpVDKbzf70BQyYAPe2yPfpcFF/RegtwdY2KSmDKukJ2u32Ztm/FMYupPQep9/vD3G4tI0rGIjc5N4AECospr7I9HcEp9NCsVg8T4z+cwuZPY/80GSeJrMGv8RIx2nkHYmBr0v9YxKG67nO53NVVTRYSafTBzOZzFCxcAw0UJIzv0x+W2savbdte0+hUPiumMbIBkoy0QUmuqc1jT6w1QrX8dXHNJkWOaMz8IuYdcHP8Xi8wkQtBab5PU7MTPSWuNsQv/lvAww2xkfEo4ZxNZFI7Mvn8z82bIDBwfiEeFiNnMEL6iOcwR8f00Tj5Kt/Rn1AMYz3+cBOE13FNPoTtFqtmcFgIP+szU/3JqvNqTgqWp1OJ9ntdpcZrSICVhnznmPFxShDGHN6vd5OzLsgRnwsxzA+DYum1f8AEL05UAjJXgsAAAAASUVORK5CYII='}
           ></Image>
         </View>
-        <TtListItem title="查看我的位置" arrow="right" onClick={this.openMyPosition} />
-        <TtListItem title="选择我的位置" arrow="right" onClick={this.choosePosition} />
-        <TtListItem title="还原" arrow="right" onClick={this.resetPosition} />
-        <TtListItem title="精准地址转换" arrow="right" onClick={this.convertPosition} />
-        <TtActionSheet isOpened={showPopup} cancelText='取消' title='将根据您的当前位置进行精准地址转换'>
+        <AtListItem title="查看我的位置" arrow="right" onClick={this.openMyPosition} />
+        <AtListItem title="选择我的位置" arrow="right" onClick={this.choosePosition} />
+        <AtListItem title="还原" arrow="right" onClick={this.resetPosition} />
+        <AtListItem title="精准地址转换" arrow="right" onClick={this.convertPosition} />
+        <AtActionSheet isOpened={showPopup} cancelText='取消' title='将根据您的当前位置进行精准地址转换'>
           {transTypeList.map((item: TransTypeItem) => (
             <View className="trans-item" key={item.type} data-item={item} onClick={this.handleItemSelected}>{item.name}</View>
           ))}
-        </TtActionSheet>
+        </AtActionSheet>
         
       </View>
     )
   }
 }
-
-export default PositionSimulation as ComponentClass<PageOwnProps, PageState>
