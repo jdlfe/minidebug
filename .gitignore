@@ -5,3 +5,9 @@ deploy_versions/
 node_modules/
 .DS_Store
 build/
+
+# temp file for git conflict merging  
+*.log
+*.swo
+*.swp
+*.vi
