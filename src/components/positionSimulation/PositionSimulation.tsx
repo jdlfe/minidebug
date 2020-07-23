@@ -1,7 +1,7 @@
 import { ComponentClass } from 'react'
 import { View, Button, Image, } from '@tarojs/components'
 import Taro, { Component, } from '@tarojs/taro'
-import { TtActionSheet, TtListItem, } from '@pandora/tarot'
+import { AtActionSheet, AtListItem, } from 'taro-ui'
 import './PositionSimulation.scss'
 import { relaunch, transformFromWGSToGCJ, transformFromGCJToWGS, } from '../../utils/util'
 import { TransTypeItem } from '../../types/DebugTypes'
@@ -50,7 +50,7 @@ class PositionSimulation extends Component {
           currentLongitude: res.longitude 
         })
         Object.defineProperty(Taro, 'getLocation', {
-          get(val) {
+          get() {
             return function(obj) {
               obj.success({ latitude: res.latitude, longitude: res.longitude })
             }
@@ -87,7 +87,7 @@ class PositionSimulation extends Component {
   }
   resetPosition = () => {
     Object.defineProperty(Taro, 'getLocation', {
-      get(val) {
+      get() {
         return function(obj) {
           obj.success({ latitude: app.initialLocation.latitude, longitude: app.initialLocation.longitude })
         }
@@ -131,15 +131,15 @@ class PositionSimulation extends Component {
             src={require('../../assets/img/right-arrow.png')}
           ></Image>
         </View>
-        <TtListItem title="查看我的位置" arrow="right" onClick={this.openMyPosition} />
-        <TtListItem title="选择我的位置" arrow="right" onClick={this.choosePosition} />
-        <TtListItem title="还原" arrow="right" onClick={this.resetPosition} />
-        <TtListItem title="精准地址转换" arrow="right" onClick={this.convertPosition} />
-        <TtActionSheet isOpened={showPopup} cancelText='取消' title='将根据您的当前位置进行精准地址转换'>
+        <AtListItem title="查看我的位置" arrow="right" onClick={this.openMyPosition} />
+        <AtListItem title="选择我的位置" arrow="right" onClick={this.choosePosition} />
+        <AtListItem title="还原" arrow="right" onClick={this.resetPosition} />
+        <AtListItem title="精准地址转换" arrow="right" onClick={this.convertPosition} />
+        <AtActionSheet isOpened={showPopup} cancelText='取消' title='将根据您的当前位置进行精准地址转换'>
           {transTypeList.map((item: TransTypeItem) => (
             <View className="trans-item" key={item.type} data-item={item} onClick={this.handleItemSelected}>{item.name}</View>
           ))}
-        </TtActionSheet>
+        </AtActionSheet>
         
       </View>
     )

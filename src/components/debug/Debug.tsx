@@ -1,7 +1,8 @@
 import { ComponentClass } from 'react'
 import Taro, { Component, } from '@tarojs/taro'
 import { View, CoverImage, CoverView, } from '@tarojs/components'
-import { TtList, TtListItem, TtActionSheet, TtActionSheetItem, } from '@pandora/tarot'
+import { AtList, AtListItem, AtActionSheet, AtActionSheetItem, } from 'taro-ui'
+
 import './Debug.scss'
 import { Menu, ENV } from '../../types/DebugTypes'
 import { FEATURE, HOME_OPERATION_LIST, HOME_MENU, ENV_LIST } from '../../utils/consants'
@@ -133,12 +134,11 @@ class Debug extends Component {
 
 
   }
-  handleChangeEnv = (e) => {
-    const { env } = e.currentTarget.dataset
+  handleChangeEnv = (env) => {
     Taro.setStorage({
       key: 'env',
       data: env,
-      success: res => {
+      success: () => {
         Taro.showModal({
           title: '提示',
           content: '环境设置成功，应用即将重启',
@@ -153,7 +153,7 @@ class Debug extends Component {
           }
         })
       },
-      complete: res => {
+      complete: () => {
         this.closeAll()
       }
     })
@@ -175,16 +175,16 @@ class Debug extends Component {
           <CoverView className='home-container'>
             <CoverImage
               className='home-img'
-              src={require('../../assets/img/home.png')}
+              src={require('../../assets/img/back.png')}
               onClick={e => { this.setState({ featureType: -1 }) }}
             ></CoverImage>
           </CoverView>
 
         )}
         {showDebugMenu && (
-          <TtList>
+          <AtList>
             {menuList.map(item => (
-              <TtListItem
+              <AtListItem
                 key={item.title}
                 title={item.title}
                 arrow="right"
@@ -192,25 +192,24 @@ class Debug extends Component {
                   e.currentTarget.dataset.item = item
                   this.handleMenuClicked(e)
                 }}
-                placeholder={item.title !== '环境切换' ? item.desc : (curEnv ? `当前环境：${curEnv}` : '环境切换')}
+                note={item.title !== '环境切换' ? item.desc : (curEnv ? `当前环境：${curEnv}` : '环境切换')}
                 hasBorder
               />
             ))}
-          </TtList>
+          </AtList>
         )}
-        <TtActionSheet isOpened={showPopup} onClose={this.closeAll} cancelText='取消' title='测试、预发、正式环境动态切换' >
+        <AtActionSheet isOpened={showPopup} onClose={this.closeAll} cancelText='取消' title='测试、预发、正式环境动态切换' >
           {envList.map(item => (
-            <TtActionSheetItem
+            <AtActionSheetItem
               key={item.env}
-              onClick={e => {
-                e.currentTarget.dataset.env = item.env
-                this.handleChangeEnv(e)
+              onClick={() => {
+                this.handleChangeEnv(item.env)
               }}
             >
               {item.name}
-            </TtActionSheetItem>
+            </AtActionSheetItem>
           ))}
-        </TtActionSheet>
+        </AtActionSheet>
 
         {featureType === FEATURE.CHANGE_PIN && (
           <ChangePin />

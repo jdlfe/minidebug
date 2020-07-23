@@ -1,7 +1,7 @@
 import { ComponentClass } from 'react'
 import Taro, { Component, } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
-import { TtList, TtListItem, } from '@pandora/tarot'
+import { AtList, AtListItem, } from 'taro-ui'
 
 import './AppInformation.scss'
 
@@ -88,32 +88,31 @@ class AppInformation extends Component {
         {systemInfoList.length > 0 && (
           <View className="info-header">系统信息</View>
         )}
-        <TtList>
+        <AtList>
           {systemInfoList.map((item: SystemInfoItem) => (
-            <TtListItem 
+            <AtListItem 
               key={item.name}
               title={item.name}
-              content={item.value + ''}
-              titleWidth={400}
+              note={item.value + ''}
             />
           ))}
-        </TtList>
+        </AtList>
         {accountInfoList.length > 0 && (
           <View className="info-header">账号信息</View>
         )}
-        <TtList>
+        <AtList>
           {accountInfoList.map((item: SystemInfoItem) => (
-            <TtListItem 
+            <AtListItem 
               key={item.name}
               title={item.name}
-              content={item.value + ''}
+              note={item.value + ''}
             />
           ))}
-        </TtList>
+        </AtList>
         {userInfoList.length > 0 && (
           <View className="info-header">用户信息</View>
         )}
-        <TtList>
+        <AtList>
           {userInfoList.map((item: SystemInfoItem) => (
             item.type === 'img' ? (
               <View className="info-item">
@@ -121,27 +120,26 @@ class AppInformation extends Component {
                 <Image className="img" src={item.value}></Image>
               </View>
             ) : (
-              <TtListItem 
+              <AtListItem
                 key={item.name}
                 title={item.name}
-                content={item.value + ''}
+                note={item.value + ''}
               />
             )
           ))}
-        </TtList>
+        </AtList>
         {authInfoList.length > 0 && (
           <View className="info-header">授权信息</View>
         )}
-        <TtList>
+        <AtList>
           {authInfoList.map((item: SystemInfoItem) => (
-            <TtListItem 
+            <AtListItem 
               key={item.name}
               title={item.name}
-              content={item.value + ''}
-              titleWidth={400}
+              note={item.value + ''}
             />
           ))}
-        </TtList>
+        </AtList>
       </View>
     )
   }

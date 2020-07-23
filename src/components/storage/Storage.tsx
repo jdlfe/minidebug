@@ -9,7 +9,7 @@ import {
 } from '@tarojs/components'
 import Taro, { Component, } from '@tarojs/taro'
 import { ComponentClass } from 'react'
-import { TtFloatLayout, } from '@pandora/tarot'
+import { AtFloatLayout, } from 'taro-ui'
 import './Storage.scss'
 
 import { AddrInfo, StorageModifyItem, } from '../../types/DebugTypes'
@@ -294,13 +294,10 @@ class Storage extends Component {
             })}
           </CheckboxGroup>
         </View>
-        <TtFloatLayout 
+        <AtFloatLayout 
           onClose={this.closeAll} 
           title={addInfo.title}
           isOpened={showPopup}
-          mode="affirm"
-          onAffirm={this.addStorage}
-          height={400}
         >
           <View className="add-input-container">
             <View className={addInfo.disabled ? 'disabled' : ''}>
@@ -311,6 +308,7 @@ class Storage extends Component {
               onInput={this.onKeyInput}
               disabled={addInfo.disabled}
               className={'add-input ' + (addInfo.disabled ? 'disabled' : '')}
+              onConfirm={this.addStorage}
             ></Input>
           </View>
           <View className="add-input-container">
@@ -319,9 +317,10 @@ class Storage extends Component {
               value={addInfo.value}
               onInput={this.onValueInput}
               className="add-input"
+              onConfirm={this.addStorage}
             ></Input>
           </View>
-        </TtFloatLayout>
+        </AtFloatLayout>
         {isDeleteMode && (
           <View className="storage-footer">
             <Button className="operate-btn" onClick={this.cancelDelete}>

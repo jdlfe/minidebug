@@ -117,7 +117,7 @@ class H5door extends Component {
         {urlList.length > 0 && (
           <View className="history-list">
             <View className="history-content">
-              {urlList.map((item, index) => {
+              {urlList.map((item) => {
                 return (
                   <View
                     className="history-item"
