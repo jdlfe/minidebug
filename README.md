@@ -135,7 +135,7 @@ renderDebug() {
 ### 跳转miniDebug方法
 
 ```javascript
-goMinDebug() {
+goMiniDebug() {
   Taro.navigateTo({
     url: `/packageD/debug/index`
   })
