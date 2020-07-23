@@ -3,3 +3,9 @@ node_modules/
 .DS_Store
 lib/
 dist/
+
+# temp file for git conflict merging  
+*.log
+*.swo
+*.swp
+*.vi
