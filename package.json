@@ -1,6 +1,6 @@
 {
   "name": "@jdwlfe/minidebug-next",
-  "version": "2.0.3",
+  "version": "1.0.0",
   "private": false,
   "description": "小程序MiniDebug工具",
   "main": "dist/index.js",
