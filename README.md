@@ -3,8 +3,7 @@
 
 MiniDebug是一款旨在提高多端小程序开发、测试效率的工具库。主要包括环境切换、身份Mock、位置模拟、缓存管理、H5跳转等功能。
 
-<!-- ![avatar](https://github.com/jeffreyzhang23/jeffreyzhang23.github.io/blob/master/images/debug-home.png) -->
-<img style="border:1px solid #000000; width: 300px;" src="https://github.com/jeffreyzhang23/jeffreyzhang23.github.io/blob/master/images/debug-home.png" />
+<img src="https://github.com/jeffreyzhang23/jeffreyzhang23.github.io/blob/master/images/home-debug.png" />
 
 ## 快速上手
 
