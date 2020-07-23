@@ -168,7 +168,7 @@ resetHttp() {
   try {
     // 先获取miniDebug中修改的env环境变量，有效取值为"development"、"prepare"、"production"
     const env = Taro.getStorageSync('env') || "production"
-    // 根据miniDebug设置的env，更改网络请求物流网关URL
+    // 根据miniDebug设置的env，更改网络请求URL
     // 你的项目可能识别的设置方式，目的是更改网络请求的base URL
     Taro.getApp().globalData.Http.config.root = ROOT_PATH[env]
   } catch (e) {}
