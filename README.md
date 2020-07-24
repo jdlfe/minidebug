@@ -1,9 +1,83 @@
 
 # MiniDebug
 
-MiniDebug是一款旨在提高多端小程序开发、测试效率的工具库。主要包括环境切换、身份Mock、位置模拟、缓存管理、H5跳转等功能。
+MiniDebug是一款旨在提高多端小程序开发、测试效率的工具库。
 
-<img src="https://github.com/jeffreyzhang23/jeffreyzhang23.github.io/blob/master/images/home-debug.png" />
+## 特性
+
+- 基于[Taro框架](https://taro.aotu.io/home/in.html)开发，支持多端。
+- 基于[Taro UI组件库](https://taro-ui.aotu.io/#/)实现，界面美观。
+- 功能丰富，满足多样化开发、调试需求。
+- 本身是组件，引入简单，代码侵入性小。
+
+## 架构图
+
+### 1. MiniDebug架构图
+
+miniDebug工具基于[Taro框架](https://taro.aotu.io/home/in.html)开发，可编译成多端小程序应用。利用原生能力支持，通过暴露API，以及修改全局state、storage数据实现和业务层的数据交互。      
+
+<img src="https://github.com/jeffreyzhang23/jeffreyzhang23.github.io/blob/master/images/mini/mini_debug.png" />
+
+### 2. 宿主工程引入MiniDebug架构图
+
+宿主工程通过npm引入miniDebug工具，通过判断环境ENV，在编译阶段实现miniDebug承载页的动态注册。
+
+<img src="https://github.com/jeffreyzhang23/jeffreyzhang23.github.io/blob/master/images/mini/mini_import.png" />
+
+## 功能介绍
+
+主要功能包括环境切换、身份Mock、应用信息获取、位置模拟、缓存管理、扫一扫、H5跳转、更新版本等。工具首页如图所示。
+
+<img src="https://github.com/jeffreyzhang23/jeffreyzhang23.github.io/blob/master/images/mini/home.png" />
+
+### 1. 环境切换
+
+让小程序在测试、预发、正式环境中随意切换。支持热加载，无需手动重启应用。
+
+<img src="https://github.com/jeffreyzhang23/jeffreyzhang23.github.io/blob/master/images/mini/change_env.png" />
+
+### 2. 身份Mock
+
+动态切换登录账号（仅支持测试环境，预发、正式环境不建议明文传输用户身份）。
+
+<img src="https://github.com/jeffreyzhang23/jeffreyzhang23.github.io/blob/master/images/mini/mock.png" />
+
+### 3. 应用信息获取
+
+一键查看系统、账号、用户、授权信息，快速定位测试、UAT问题。
+
+<img src="https://github.com/jeffreyzhang23/jeffreyzhang23.github.io/blob/master/images/mini/device.png" />
+
+### 4. 位置模拟
+
+功能包括
+- 快速授权，小程序授权入口很深，该功能可一键快速进行权限授权。
+- 查看位置，在地图上快速确定自己的位置。
+- 选择位置，代理小程序getLocation方法，无需修改代码即可任意切换当前位置。
+- 还原，一键还原用户位置。
+- 地址转换，支持wgs84和gcj02坐标系互转。
+
+<img src="https://github.com/jeffreyzhang23/jeffreyzhang23.github.io/blob/master/images/mini/position.png" />
+
+### 5. 缓存管理
+
+支持storage信息的查看、新增、删除、修改。
+
+<img src="https://github.com/jeffreyzhang23/jeffreyzhang23.github.io/blob/master/images/mini/storage.png" />
+
+### 6. 扫一扫
+
+主要用于扫描小程序码、二维码场景。微信原生扫一扫扫码会直接跳转线上版本，该功能可以跳转至相应开发、体验版本，提高测试效率，降低上线风险。
+
+### 7. H5跳转
+
+主要用于在App环境打开H5场景。如测试H5在微信环境某些特殊逻辑。
+
+<img src="https://github.com/jeffreyzhang23/jeffreyzhang23.github.io/blob/master/images/mini/h5.png" />
+
+### 8. 更新版本
+
+更新小程序版本。
 
 ## 快速上手
 
