@@ -1,6 +1,6 @@
 {
   "name": "@jdlfe/minidebug",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": false,
   "description": "小程序MiniDebug工具",
   "main": "src/index.ts",
@@ -9,6 +9,13 @@
     "typescript": true,
     "css": "sass"
   },
+  "keywords": [
+    "taro",
+    "taro-ui",
+    "mini",
+    "minidebug",
+    "debug"
+  ],
   "scripts": {
     "build:weapp": "taro build --type weapp",
     "build:swan": "taro build --type swan",
