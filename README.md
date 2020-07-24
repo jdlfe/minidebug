@@ -16,7 +16,7 @@ MiniDebug是一款旨在提高多端小程序开发、测试效率的工具库�
 
 miniDebug工具基于[Taro框架](https://taro.aotu.io/home/in.html)开发，可编译成多端小程序应用。利用原生能力支持，通过暴露API，以及修改全局state、storage数据实现和业务层的数据交互。      
 
-<img src="https://m.360buyimg.com/marketingminiapp/jfs/t1/114857/22/13369/136735/5f1a3fa7Eec35395f/b41cab06d83545d9.png" />
+<img src="https://m.360buyimg.com/marketingminiapp/jfs/t1/119074/16/12999/118921/5f1a4496E37c1d8cc/b3d0ad47d1db6f03.png" />
 
 ### 2. 宿主工程引入MiniDebug架构图
 
