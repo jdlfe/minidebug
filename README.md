@@ -16,37 +16,37 @@ MiniDebug是一款旨在提高多端小程序开发、测试效率的工具库�
 
 miniDebug工具基于[Taro框架](https://taro.aotu.io/home/in.html)开发，可编译成多端小程序应用。利用原生能力支持，通过暴露API，以及修改全局state、storage数据实现和业务层的数据交互。      
 
-<img src="https://github.com/jeffreyzhang23/jeffreyzhang23.github.io/blob/master/images/mini/mini_debug.png" />
+<img src="https://m.360buyimg.com/marketingminiapp/jfs/t1/114857/22/13369/136735/5f1a3fa7Eec35395f/b41cab06d83545d9.png" />
 
 ### 2. 宿主工程引入MiniDebug架构图
 
 宿主工程通过npm引入miniDebug工具，通过判断环境ENV，在编译阶段实现miniDebug承载页的动态注册。
 
-<img src="https://github.com/jeffreyzhang23/jeffreyzhang23.github.io/blob/master/images/mini/mini_import.png" />
+<img src="https://m.360buyimg.com/marketingminiapp/jfs/t1/132507/11/5322/176233/5f1a3fb6Eb7828fc1/34c2074726c463ed.png" />
 
 ## 功能介绍
 
 主要功能包括环境切换、身份Mock、应用信息获取、位置模拟、缓存管理、扫一扫、H5跳转、更新版本等。工具首页如图所示。
 
-<img src="https://github.com/jeffreyzhang23/jeffreyzhang23.github.io/blob/master/images/mini/home.png" />
+<img src="https://m.360buyimg.com/marketingminiapp/jfs/t1/132205/16/5308/23857/5f1a3fcaEb68e91a9/1d27304db2daf1e8.png" />
 
 ### 1. 环境切换
 
 让小程序在测试、预发、正式环境中随意切换。支持热加载，无需手动重启应用。
 
-<img src="https://github.com/jeffreyzhang23/jeffreyzhang23.github.io/blob/master/images/mini/change_env.png" />
+<img src="https://m.360buyimg.com/marketingminiapp/jfs/t1/134788/18/5289/25074/5f1a3fddEeb6247d4/568a51ca6a9c85d7.png" />
 
 ### 2. 身份Mock
 
 动态切换登录账号（仅支持测试环境，预发、正式环境不建议明文传输用户身份）。
 
-<img src="https://github.com/jeffreyzhang23/jeffreyzhang23.github.io/blob/master/images/mini/mock.png" />
+<img src="https://m.360buyimg.com/marketingminiapp/jfs/t1/122610/16/7885/10243/5f1a3ff3E18a25657/4e4f8363d36ff772.png" />
 
 ### 3. 应用信息获取
 
 一键查看系统、账号、用户、授权信息，快速定位测试、UAT问题。
 
-<img src="https://github.com/jeffreyzhang23/jeffreyzhang23.github.io/blob/master/images/mini/device.png" />
+<img src="https://m.360buyimg.com/marketingminiapp/jfs/t1/139116/34/3663/25002/5f1a4003E1027103f/eebc9936c67ac604.png" />
 
 ### 4. 位置模拟
 
@@ -57,13 +57,13 @@ miniDebug工具基于[Taro框架](https://taro.aotu.io/home/in.html)开发，可
 - 还原，一键还原用户位置。
 - 地址转换，支持wgs84和gcj02坐标系互转。
 
-<img src="https://github.com/jeffreyzhang23/jeffreyzhang23.github.io/blob/master/images/mini/position.png" />
+<img src="https://m.360buyimg.com/marketingminiapp/jfs/t1/112723/13/13206/14070/5f1a4016E7c07d410/7a4a0866c91fee15.png" />
 
 ### 5. 缓存管理
 
 支持storage信息的查看、新增、删除、修改。
 
-<img src="https://github.com/jeffreyzhang23/jeffreyzhang23.github.io/blob/master/images/mini/storage.png" />
+<img src="https://m.360buyimg.com/marketingminiapp/jfs/t1/134334/39/5114/18174/5f1a4028Eb60989dd/ce97ffdeb34cdffa.png" />
 
 ### 6. 扫一扫
 
@@ -73,7 +73,7 @@ miniDebug工具基于[Taro框架](https://taro.aotu.io/home/in.html)开发，可
 
 主要用于在App环境打开H5场景。如测试H5在微信环境某些特殊逻辑。
 
-<img src="https://github.com/jeffreyzhang23/jeffreyzhang23.github.io/blob/master/images/mini/h5.png" />
+<img src="https://m.360buyimg.com/marketingminiapp/jfs/t1/125372/9/7758/13332/5f1a4037E05924831/3f772377690e2c46.png" />
 
 ### 8. 更新版本
 
@@ -101,7 +101,7 @@ npm install @jdlfe/minidebug-next --save-dev
 
 推荐在空目录下创建页面，该页面用于引入miniDebug组件
 
-![avatar](https://github.com/jeffreyzhang23/jeffreyzhang23.github.io/blob/master/images/package.png)
+![avatar](https://m.360buyimg.com/marketingminiapp/jfs/t1/138948/20/3649/5434/5f1a3ee5E70d7fa1d/6cd409231879147c.png)
 
 ### 动态注册miniDebug承载页
 
