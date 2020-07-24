@@ -14,13 +14,13 @@ miniDebug工具基于[Taro框架](https://taro.aotu.io/home/in.html)和[Taro UI�
 如果您的taro版本为1.x、2.x，请按如下方式安装
 
 ```bash
-npm install @jdwlfe/minidebug --save-dev
+npm install @jdlfe/minidebug --save-dev
 ```
 
 如果您的taro版本为3.x，请按如下方式安装
 
 ```bash
-npm install @jdwlfe/minidebug-next --save-dev
+npm install @jdlfe/minidebug-next --save-dev
 ```
 
 ### 新建空页面
@@ -85,24 +85,24 @@ export default {
 只需将miniDebug作为普通Taro组件引入。taro1.x、2.x版本：
 
 ```javascript
-import { Debug } from '@jdwlfe/minidebug'
+import { Debug } from '@jdlfe/minidebug'
 ```
 taro 3.x版本：
 
 ```javascript
-import { Debug } from '@jdwlfe/minidebug-next'
+import { Debug } from '@jdlfe/minidebug-next'
 ```
 
 引入组件依赖的样式文件。taro1.x、2.x版本：
 
 ```scss
-@import '~@jdwlfe/minidebug/src/app.scss'
+@import '~@jdlfe/minidebug/src/app.scss'
 ```
 
 taro 3.x版本：
 
 ```scss
-@import "~@jdwlfe/minidebug-next/dist/style/index.scss";
+@import "~@jdlfe/minidebug-next/dist/style/index.scss";
 ```
 
 ### 修改render函数
