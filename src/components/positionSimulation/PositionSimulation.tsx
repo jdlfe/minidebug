@@ -2,10 +2,10 @@ import { ComponentClass } from 'react'
 import { View, Button, Image, } from '@tarojs/components'
 import Taro, { Component, } from '@tarojs/taro'
 import { AtActionSheet, AtListItem, } from 'taro-ui'
-import './PositionSimulation.scss'
 import { relaunch, transformFromWGSToGCJ, transformFromGCJToWGS, } from '../../utils/util'
 import { TransTypeItem } from '../../types/DebugTypes'
 import { CONVERT_LIST } from '../../utils/consants'
+import './positionSimulation.scss'
 
 const app = Taro.getApp()
 

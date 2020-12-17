@@ -2,8 +2,8 @@ import { ComponentClass } from 'react'
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Input, Button, } from '@tarojs/components'
 
-import './ChangePin.scss'
 import { relaunch } from '../../utils/util'
+import './changePin.scss'
 
 const app = Taro.getApp()
 

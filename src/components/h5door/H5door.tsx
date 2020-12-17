@@ -8,7 +8,7 @@ import {
   WebView 
 } from '@tarojs/components'
 
-import './H5door.scss'
+import './h5door.scss'
 
 type PageStateProps = {
 }

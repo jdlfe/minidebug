@@ -3,11 +3,10 @@ import Taro, { Component, } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import { AtList, AtListItem, } from 'taro-ui'
 
-import './AppInformation.scss'
-
 import { SystemInfoItem, } from '../../types/DebugTypes'
-
 import { transSystemInfo, transUserInfo, transAuthInfo } from '../../utils/util'
+
+import './appInformation.scss'
 
 type PageStateProps = {
 }

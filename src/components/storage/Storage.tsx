@@ -10,9 +10,9 @@ import {
 import Taro, { Component, } from '@tarojs/taro'
 import { ComponentClass } from 'react'
 import { AtFloatLayout, } from 'taro-ui'
-import './Storage.scss'
 
 import { AddrInfo, StorageModifyItem, } from '../../types/DebugTypes'
+import './storage.scss'
 
 type PageStateProps = {
 }
