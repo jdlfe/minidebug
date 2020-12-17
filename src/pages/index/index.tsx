@@ -2,8 +2,8 @@ import { ComponentClass } from 'react'
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 
+import { Debug } from '../../components/index'
 import './index.scss'
-import Debug from '../../components/debug/Debug'
 
 type PageStateProps = {}
 
