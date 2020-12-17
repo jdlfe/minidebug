@@ -5,7 +5,7 @@ import { AtList, AtListItem, AtActionSheet, AtActionSheetItem, } from 'taro-ui'
 import { Menu, ENV } from '../../types/DebugTypes'
 import { FEATURE, HOME_OPERATION_LIST, HOME_MENU, ENV_LIST } from '../../utils/consants'
 
-import ChangePin from '../changePin/ChangePin'
+import ChangePin from '../changePin/changePin'
 import AppInformation from '../../components/appinformation/AppInformation'
 import PositionSimulation from '../../components/positionSimulation/PositionSimulation'
 import H5door from '../../components/h5door/H5door'
