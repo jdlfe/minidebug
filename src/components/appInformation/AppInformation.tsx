@@ -38,6 +38,9 @@ class AppInformation extends Component {
   }
 
   componentDidMount() {
+    Taro.setNavigationBarTitle({
+      title: '应用信息'
+    })
     this.getSystemInfo()
     this.getAccountInfo()
     this.getUserInfo()
@@ -89,7 +92,7 @@ class AppInformation extends Component {
         )}
         <AtList>
           {systemInfoList.map((item: SystemInfoItem) => (
-            <AtListItem 
+            <AtListItem
               key={item.name}
               title={item.name}
               note={item.value + ''}
@@ -101,7 +104,7 @@ class AppInformation extends Component {
         )}
         <AtList>
           {accountInfoList.map((item: SystemInfoItem) => (
-            <AtListItem 
+            <AtListItem
               key={item.name}
               title={item.name}
               note={item.value + ''}
@@ -132,7 +135,7 @@ class AppInformation extends Component {
         )}
         <AtList>
           {authInfoList.map((item: SystemInfoItem) => (
-            <AtListItem 
+            <AtListItem
               key={item.name}
               title={item.name}
               note={item.value + ''}

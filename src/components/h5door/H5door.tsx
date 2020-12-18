@@ -1,11 +1,11 @@
 import { ComponentClass } from 'react'
 import Taro, { Component, } from '@tarojs/taro'
-import { 
+import {
   View,
   Textarea,
   Image,
   Button,
-  WebView 
+  WebView
 } from '@tarojs/components'
 
 import './h5door.scss'
@@ -37,6 +37,9 @@ class H5door extends Component {
     showWebview: false,
   }
   componentDidMount() {
+    Taro.setNavigationBarTitle({
+      title: 'H5跳转'
+    })
     this.getUrlList()
   }
   getUrlList = () => {
@@ -57,8 +60,8 @@ class H5door extends Component {
   scanCode = () => {
     Taro.scanCode({
       success: res => {
-        this.setState({ 
-          jumpUrl: res.result, 
+        this.setState({
+          jumpUrl: res.result,
         }, () => {
           this.jump()
         })

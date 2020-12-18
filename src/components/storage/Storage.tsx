@@ -62,6 +62,9 @@ class Storage extends Component {
   }
 
   componentDidMount() {
+    Taro.setNavigationBarTitle({
+      title: '缓存管理'
+    })
     this.handleResetData()
   }
 
@@ -261,8 +264,8 @@ class Storage extends Component {
           >
             {storage.map((item: StorageModifyItem, index) => {
               return (
-                <View 
-                  className="storage-item" 
+                <View
+                  className="storage-item"
                   key={'_' + index}
                 >
                   {isDeleteMode && (
@@ -294,8 +297,8 @@ class Storage extends Component {
             })}
           </CheckboxGroup>
         </View>
-        <AtFloatLayout 
-          onClose={this.closeAll} 
+        <AtFloatLayout
+          onClose={this.closeAll}
           title={addInfo.title}
           isOpened={showPopup}
         >

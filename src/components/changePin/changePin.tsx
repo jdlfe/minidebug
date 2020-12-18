@@ -31,6 +31,11 @@ class ChangePin extends Component {
     userPin: app.globalData.userPin,
     inputPin: ''
   }
+  componentDidMount() {
+    Taro.setNavigationBarTitle({
+      title: '身份Mock'
+    })
+  }
 
   handleInput = (e) => {
     this.setState({
