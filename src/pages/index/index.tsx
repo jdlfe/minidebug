@@ -22,7 +22,7 @@ interface Index {
 class Index extends Component {
 
     config: Config = {
-      navigationBarTitleText: '首页'
+      navigationBarTitleText: 'MiniDebug 工具'
     }
   render () {
     return (

@@ -39,15 +39,18 @@ class PositionSimulation extends Component {
   }
 
   componentDidMount() {
+    Taro.setNavigationBarTitle({
+      title: '位置模拟'
+    })
     this.getMyPosition()
   }
 
   choosePosition = () => {
     Taro.chooseLocation({
       success: res => {
-        this.setState({ 
-          currentLatitude: res.latitude, 
-          currentLongitude: res.longitude 
+        this.setState({
+          currentLatitude: res.latitude,
+          currentLongitude: res.longitude
         })
         Object.defineProperty(Taro, 'getLocation', {
           get() {
@@ -65,9 +68,9 @@ class PositionSimulation extends Component {
     Taro.getLocation({
       type: 'gcj02',
       success: res => {
-        this.setState({ 
-          currentLatitude: res.latitude, 
-          currentLongitude: res.longitude 
+        this.setState({
+          currentLatitude: res.latitude,
+          currentLongitude: res.longitude
         })
         console.log('current position...', res.latitude, res.longitude)
       }
@@ -140,7 +143,7 @@ class PositionSimulation extends Component {
             <View className="trans-item" key={item.type} data-item={item} onClick={this.handleItemSelected}>{item.name}</View>
           ))}
         </AtActionSheet>
-        
+
       </View>
     )
   }
