@@ -10,6 +10,7 @@ export const FEATURE: any = {
   SCAN: 6,
   JUMP_H5: 7,
   UPDATE: 8,
+  PERFORMANCE: 9,
 }
 export const HOME_OPERATION_LIST: Array<number> = [
   FEATURE.DEFAULT,
@@ -57,6 +58,11 @@ export const HOME_MENU: Array<Menu> = [
     title: '更新版本',
     type: FEATURE.UPDATE,
     desc: '更新应用版本',
+  },
+  {
+    title: '性能监控',
+    type: FEATURE.PERFORMANCE,
+    desc: '性能指标分析',
   },
 ]
 export const ENV_LIST: Array<ENV> = [

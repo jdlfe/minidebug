@@ -11,6 +11,7 @@ import AppInformation from '../../components/appinformation/AppInformation'
 import PositionSimulation from '../../components/positionSimulation/PositionSimulation'
 import H5door from '../../components/h5door/H5door'
 import Storage from '../../components/storage/Storage'
+import PerformanceMonitor from '../PerformanceMonitor/PerformanceMonitor';
 import './debug.scss'
 
 const app = Taro.getApp()
@@ -47,6 +48,7 @@ class Debug extends Component {
   }
 
   componentDidMount() {
+    
     const envEnum = Taro.getStorageSync('env')
     const envItem = this.state.envList.find(item => item.env === envEnum)
     this.setState({
@@ -226,6 +228,10 @@ class Debug extends Component {
         {/* 缓存管理 */}
         {featureType === FEATURE.MANAGE_STORAGE && (
           <Storage onShowHomeMenu={this.onShowHomeMenu} onHideHomeMenu={this.onHideHomeMenu} />
+        )}
+        {/* 性能监控 */}
+        {featureType === FEATURE.PERFORMANCE && (
+          <PerformanceMonitor />
         )}
       </View>
     )
