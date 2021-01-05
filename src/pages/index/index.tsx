@@ -16,17 +16,17 @@ type PageState = {}
 type IProps = PageStateProps & PageDispatchProps & PageOwnProps
 
 interface Index {
-  props: IProps;
+  props: IProps
 }
 
 class Index extends Component {
+  config: Config = {
+    navigationBarTitleText: 'MiniDebug 工具',
+  }
 
-    config: Config = {
-      navigationBarTitleText: 'MiniDebug 工具'
-    }
-  render () {
+  render() {
     return (
-      <View className='container'>
+      <View className="container">
         <Debug />
       </View>
     )
