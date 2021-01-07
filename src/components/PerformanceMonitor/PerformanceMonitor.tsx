@@ -43,7 +43,7 @@ class PerformanceMonitor extends Component {
     const { entryData } = this.state
     return (
       <View className="container">
-        <Text className="title">性能监控指标：</Text>
+        <Text className="title">性能指标分析：</Text>
         {(entryData || initEntryData).map((item) => {
           return (
             <View className="list" key={item.name}>
