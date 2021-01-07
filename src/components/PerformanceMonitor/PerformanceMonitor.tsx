@@ -29,9 +29,6 @@ class PerformanceMonitor extends Component {
   constructor(props) {
     super(props)
     const performance = wx.getPerformance()
-    console.log('====================================')
-    console.log('constructor', performance)
-    console.log('====================================')
     const observer = performance.createObserver(entryList => {
       console.log(entryList.getEntries())
       initEntryData = entryList.getEntries()
@@ -44,15 +41,12 @@ class PerformanceMonitor extends Component {
 
   render() {
     const { entryData } = this.state
-    console.log('====================================');
-    console.log('entryData',entryData, initEntryData);
-    console.log('====================================');
     return (
       <View className="container">
         <Text className="title">性能监控指标：</Text>
         {(entryData || initEntryData).map((item) => {
           return (
-            <View key={item.name}>
+            <View className="list" key={item.name}>
               <Text className="name">{item.entryType === 'navigation' ? '小程序启动耗时' : item.entryType === 'script' ? '注入脚本耗时' : '页面首次渲染耗时'}: </Text>
               <Text className="text">{item.duration} ms</Text>
             </View>
