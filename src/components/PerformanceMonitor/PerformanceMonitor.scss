@@ -1,4 +1,5 @@
 .title {
+  padding-left: 30px;
   font-size: 36px;
   padding-bottom: 20px;
   color: #333333;
@@ -10,4 +11,13 @@
 }
 .text {
   color: #999;
+}
+
+.list {
+  height: 60px;
+  padding: 20px 50px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }

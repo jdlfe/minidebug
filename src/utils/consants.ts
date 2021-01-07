@@ -60,7 +60,7 @@ export const HOME_MENU: Array<Menu> = [
     desc: '更新应用版本',
   },
   {
-    title: '性能监控',
+    title: '性能指标',
     type: FEATURE.PERFORMANCE,
     desc: '性能指标分析',
   },
