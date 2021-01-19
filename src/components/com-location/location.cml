@@ -1,0 +1,112 @@
+<template lang="vue">
+  <view class="container">
+    <view class="title" @tap="viewLocationClick">
+        <text>查看我的位置</text>
+    </view>
+    <view class="title" @tap="choseLocationClick">
+        <text>选择我的位置</text>
+    </view>
+    <view class="title" @tap="resetLocationClick">
+        <text>还原位置</text>
+    </view>
+    <view class="title">
+        <text>精准地址转换</text>
+    </view>
+  </view>
+</template>
+
+<script>
+import cml from 'chameleon-api'
+import store from '../../store'
+
+class Index  {
+  data = {
+      currentLat: '',
+      currentLong: ''
+  }
+ 
+  methods = {
+    getCurrentPosition(){
+        const that = this
+        wx && wx.getLocation({
+            type: 'gcj-02',
+            success: res => {
+                that.setData({
+                    currentLat: res.latitude,
+                    currentLong: res.longitude
+                })
+            }
+        })
+    },
+
+      // 查看我的位置
+    viewLocationClick() {
+        wx && wx.getLocation({
+            type: 'gcj-02',
+            success: res => {
+                wx.openLocation({
+                    latitude: res.latitude,
+                    longitude: res.longitude,
+                    scale: 18
+                })
+            }
+        })
+    },
+
+    choseLocationClick() {
+        const that = this
+        wx && wx.chooseLocation({
+            success: res => {
+                that.setData({
+                  currentLat: res.latitude,
+                  currentLong: res.longitude
+              })
+            }
+        })
+    },
+
+    resetLocationClick() {
+        
+    }
+  }
+  created(){
+     this.getCurrentPosition()
+  }
+}
+
+export default new Index()
+</script>
+<style scoped>
+.container {
+  height: 100%;
+}
+
+.title,.input {
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+    padding: 24cpx;
+}
+
+.input input{
+  border: 0;
+}
+
+.confirm-btn {
+  position: fixed;
+  bottom: 30cpx;
+  left: 30cpx;
+  width: 690cpx;
+  height: 100cpx;
+  border: 0;
+  color:#ffffff;
+  line-height: 100cpx;
+  font-size: 32cpx;
+  text-align: center;
+}
+
+</style>
+<script cml-type="json">
+{
+
+}
+</script>

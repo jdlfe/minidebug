@@ -1,0 +1,147 @@
+<template lang="vue">
+  <view class="container">
+    <view class="input">
+        <textarea v-model="jumpUrl" rows="{{5}}" maxlength="{{200}}" placeholder="请输入跳转链接"/>
+        <image class="scan" src="{{scanImg}}" @tap="scanClick"/>
+    </view>
+    <view v-if="historyList.length > 0" class="history-list">
+        <view class="history" v-for="history in historyList" @click="historyClick" data-url="{{history}}">
+            <text>{{history}}</text>
+        </view>
+        <view class="history clear" @tap="clearClick">
+            <text>清空搜索历史</text>
+        </view>
+    </view>
+    <button
+      class="jump-btn"
+        type="red"
+        text="点击跳转"
+        @tap="jumpClick"
+    />
+    <WebView v-if="showWebview" src="{{jumpUrl}}"></WebView>
+  </view>
+</template>
+
+<script>
+import cml from 'chameleon-api'
+import { transSystemInfo, transUserInfo, transAuthInfo } from '../../utils/util.js'
+
+class Index  {
+  data = {
+    scanImg: require('../../assets/images/scan.png'),
+    jumpUrl: '',
+    historyList: [],
+    showWebview: false
+  }
+  methods = {
+    scanClick() {
+        wx && wx.scanCode({
+            success: (res) => {
+                if(res.path){
+                    this.jumpUrl = path
+                }
+            }
+        })
+    },
+
+    historyClick(event){
+      const { url } = event.currentTarget.dataset
+      this.jumpUrl = url
+      this.showWebview = true
+    },
+
+    jumpClick() {
+      if(!this.jumpUrl) {
+          cml.showToast({message: '请输入跳转链接'})
+          return
+      }
+      this.storageUrl()
+      this.showWebview = true
+    },
+
+    clearClick() {
+      this.historyList = []
+      cml.setStorage('minidebug-h5-history', this.historyList)
+    },
+
+    storageUrl(){
+        if(this.historyList.indexOf(this.jumpUrl) > -1) {
+            return
+        }
+        const list = [...this.historyList, this.jumpUrl]
+        this.historyList.unshift(this.jumpUrl)
+        if (this.historyList.length > 5) {
+            this.historyList.pop()
+        }
+        cml.setStorage('minidebug-h5-history', this.historyList)
+    },
+  }
+  created(){
+   cml.getStorage('minidebug-h5-history').then((res)=>{
+      this.historyList = res
+    }, (err)=> {
+      this.historyList = []
+    })
+  }
+}
+
+export default new Index()
+</script>
+<style scoped>
+.container {
+  height: 100%;
+}
+
+.input textarea{
+  padding: 24cpx;
+  border: 1cpx solid #eee;
+  height: 300cpx;
+}
+
+.scan{
+  position: fixed;
+  right: 32cpx;
+  top: 230cpx;
+  height: 56cpx;
+  width: 56cpx;
+  z-index: 99;
+}
+
+.history{
+  height: 90cpx;
+  line-height: 90cpx;
+  padding-left: 57cpx;
+  position: relative;
+  font-size: 24cpx;
+  color: #333333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  border-bottom: 2cpx solid #efefef;
+}
+.history.clear{
+  font-size: 20cpx;
+  text-align: center;
+  align-items: center;
+  color: #999;
+}
+
+.jump-btn {
+  position: fixed;
+  bottom: 30cpx;
+  left: 30cpx;
+  width: 690cpx;
+  height: 100cpx;
+  border: 0;
+  color:#ffffff;
+  line-height: 100cpx;
+  font-size: 32cpx;
+  text-align: center;
+}
+
+</style>
+<script cml-type="json">
+{
+
+}
+</script>

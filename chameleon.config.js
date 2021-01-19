@@ -5,7 +5,7 @@ const publicPath = '//www.static.chameleon.com/cml';
 const apiPrefix = 'https://api.chameleon.com';
 
 cml.config.merge({
-  templateLang: "cml",
+  templateLang: "vue",
   templateType: "html",
   platforms: ["web","weex","wx","alipay","baidu","qq"],
   buildInfo: {

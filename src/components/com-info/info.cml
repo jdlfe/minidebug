@@ -1,0 +1,126 @@
+<template lang="vue">
+  <scroller height="{{-1}}">
+    <view class="caption"><text>系统信息</text></view>
+    <view class="info" v-for="info in systemInfoList" :key="info.name">
+        <text class="name">{{info.name}}</text>
+        <text class="value">{{info.value}}</text>
+    </view>
+    <view class="caption"><text>账号信息</text></view>
+    <view class="info" v-for="info in accountInfoList" :key="info.name">
+        <text class="name">{{info.name}}</text>
+        <text class="value">{{info.value}}</text>
+    </view>
+     <view class="caption"><text>用户信息</text></view>
+    <view class="info" v-for="info in userInfoList" :key="info.name">
+        <text class="name">{{info.name}}</text>
+        <text class="value">{{info.value}}</text>
+    </view>
+    <view class="caption"><text>授权信息</text></view>
+    <view class="info" v-for="info in authInfoList" :key="info.name">
+        <text class="name">{{info.name}}</text>
+        <text class="value">{{info.value}}</text>
+    </view>
+  </scroller>
+</template>
+
+<script>
+import cml from 'chameleon-api'
+import { transSystemInfo, transUserInfo, transAuthInfo } from '../../utils/util.js'
+
+class Index  {
+  data = {
+    systemInfoList: [],
+    accountInfoList: [],
+    userInfoList: [],
+    authInfoList: []
+  }
+  methods = {
+    featureClick(event){
+      const { type } = event.currentTarget.dataset.feature
+      this.current = type
+    },
+
+    getSystemInfo(){
+      cml.getSystemInfo().then(info => {
+        this.systemInfoList = transSystemInfo(info.extraParams)
+      })
+    },
+
+    getAccountInfo() {
+      wx && this.accountInfoList.push({
+        name: '小程序APPID',
+        value: wx.getAccountInfoSync().miniProgram.appId
+      })
+    },
+
+    getUserInfo(){
+      wx && wx.getUserInfo({
+        success: (info) => {
+          console.log(info)
+          this.userInfoList = transUserInfo(info.userInfo)
+        }
+      })
+    },
+
+    getAuthInfo() {
+      wx && wx.getSetting({
+        success: (info) => {
+          this.authInfoList = transAuthInfo(info.authSetting)
+        }
+      })
+    }
+  }
+  created(){
+    this.getSystemInfo()
+    this.getAccountInfo()
+    this.getUserInfo()
+    this.getAuthInfo()
+  }
+}
+
+export default new Index()
+</script>
+<style scoped>
+.caption{
+  padding: 24cpx 36cpx;
+  border-top: 1cpx solid #eee;
+}
+.caption:before{
+    content: "";
+    display: block;
+    position: absolute;
+    left: 20cpx;
+    top: 50%;
+    margin-top: -20cpx;
+    width: 6cpx;
+    height: 40cpx;
+    background-color: #e1251b;
+    box-shadow: 0 7cpx 12cpx 0 rgba(97, 144, 232, 0.2);
+    border-radius: 1cpx;
+}
+.info{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border-top: 1cpx solid #eee;
+  padding: 20cpx;
+}
+.name{
+  font-size: 30cpx;
+}
+.value{
+  font-size: 24cpx;
+  color: #aaa;
+}
+.scroller-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+</style>
+<script cml-type="json">
+{
+
+}
+</script>

@@ -1,39 +1,191 @@
-<template>
-  <page title="chameleon">
-      <scroller height="{{-1}}">
-        <view class="scroller-wrap">
-          <demo-com title="{{title}}" image-src="{{chameleonSrc}}"></demo-com>
-        </view>
-      </scroller>
+<template lang="vue">
+  <page title="{{title}}">
+      <cover-view v-if="showBack" class="home-back" @tap="backClick">
+        <image
+          class="back-img"
+          src="{{backImg}}"
+        ></image>
+      </cover-view>
+      <view v-if="current === -1">
+        <scroller height="{{-1}}">
+          <view class="feature" v-for="feature in features" :key="feature.type" @tap="featureClick" data-feature="{{feature}}">
+            <text class="title">{{feature.title}}</text>
+            <text class="desc">{{feature.desc}}</text>
+          </view>
+        </scroller>
+      </view>
+      <com-pin v-if="current === FEATURE.CHANGE_PIN" />
+      <com-location v-if="current === FEATURE.MOCK_POSITION" />
+      <com-store v-if="current === FEATURE.MANAGE_STORAGE" />
+      <com-h5 v-if="current === FEATURE.JUMP_H5" />
+      <com-info v-if="current === FEATURE.GET_APP_INFO" />
+
+      <c-actionsheet
+        show="{{showEnvAction}}"
+        title="测试、预发、正式环境动态切换"
+        list="{{actionList}}"
+        active="{{currentEnv}}"
+        cancel-txt="取消"
+        @select="envActionSelect"
+      ></c-actionsheet>
   </page>
 </template>
 
 <script>
+import cml from 'chameleon-api'
+import { FEATURE, HOME_MENU } from '../../utils/constants'
 
 class Index  {
   data = {
-    title: "chameleon",
-    chameleonSrc: require('../../assets/images/chameleon.png')
+    FEATURE,
+    title: '首页',
+    backImg: require('../../assets/images/back.png'),
+    features: HOME_MENU,
+    current: FEATURE.DEFAULT,
+    showEnvAction: false,
+    currentEnv: 0,
+    actionList: ['测试', '预发', '正式']
+  }
+
+  computed = {
+    showBack() {
+      return [FEATURE.CHANGE_PIN, FEATURE.MOCK_POSITION, FEATURE.MANAGE_STORAGE, FEATURE.GET_APP_INFO, FEATURE.JUMP_H5].indexOf(this.current) > -1
+    }
+  }
+
+  methods = {
+    featureClick(event){
+      const { type, title } = event.currentTarget.dataset.feature
+      if(type === FEATURE.CHANGE_ENV) {
+        this.handleEnvChange()
+      } else if(type === FEATURE.SCAN){
+        this.handleScan()
+      } else if(type === FEATURE.UPDATE) {
+        this.handleUpdate()
+      } else {
+        this.current = type
+        this.title = title
+      }
+    },
+
+    backClick() {
+      this.current = FEATURE.DEFAULT
+      this.title = '首页'
+    },
+
+    handleEnvChange() {
+      this.setData({
+        showEnvAction: true
+      })
+    },
+
+    envActionSelect(evt) {
+      const { index } = evt.detail
+      const envs = ['development', 'prepare', 'production']
+      cml.setStorage('env', envs[index]).then(
+        () => {
+          cml
+            .alert({
+              message: '环境设置成功，应用即将重启',
+              confirmTitle: '知道了',
+            })
+            .then(() => {
+              cml.redirectTo({path: '/pages/index'})
+            })
+        }
+      )
+      this.setData({
+        showEnvAction: false,
+        currentEnv: index
+      })
+    },
+
+    handleUpdate() {
+      if(!wx) {
+        return
+      }
+      const updateManager = wx.getUpdateManager()
+      updateManager.onCheckForUpdate((res) => {
+        if (res && !res.hasUpdate) {
+          // 请求完新版本信息的回调
+          cml.alert({
+            message: '当前已经是最新版本',
+            confirmTitle: '更新提示',
+          })
+        }
+      })
+      updateManager.onUpdateReady(function() {
+        cml.alert({
+          message: '新版本已经准备好，是否重启应用？',
+          confirmTitle: '更新提示',
+        }).then(() => {
+          updateManager.applyUpdate()
+        })
+      })
+      updateManager.onUpdateFailed(function() {
+        // 新版本下载失败
+      })
+    },
+
+    handleScan() {
+      wx && wx.scanCode({
+        success: (res) => {
+          console.log('scan result...', res)
+          res.path && cml.redirectTo({ path:`/${res.path}` })
+        }
+      })
+    }
   }
 }
 
-export default new Index();
-
+export default new Index()
 </script>
-<style>
-
-.scroller-wrap {
+<style scoped>
+.feature{
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
+  border-top: 1cpx solid #eee;
+  padding: 20cpx;
 }
+.title{
+  font-size: 30cpx;
+}
+.desc{
+  font-size: 24cpx;
+  color: #aaa;
+}
+.home-back {
+  display: flex;
+	align-items: center;;
+	justify-content: center;
+	width: 80cpx;
+	height: 80cpx;
+	border: .5cpx solid #d4d4d4;
+	margin-top: 400cpx;
+	border-radius: 40cpx;
+	position: fixed;
+	right: 20cpx;
+	bottom: 200cpx;
+	z-index: 1000;
+	background-color: #FFFFFF;
+}
+.back-img {
+		width: 60cpx;
+		height: 60cpx;
+	}
 
 </style>
 <script cml-type="json">
 {
   "base": {
     "usingComponents": {
-      "demo-com": "/components/demo-com/demo-com"
+      "c-actionsheet": "cml-ui/components/c-actionsheet/c-actionsheet",
+      "com-pin": "/components/com-pin/pin",
+      "com-location": "/components/com-location/location",
+      "com-store": "/components/com-store/store",
+      "com-h5": "/components/com-h5/h5",
+      "com-info": "/components/com-info/info"
     }
   },
   "wx": {
