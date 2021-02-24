@@ -3,17 +3,94 @@
     <view class="title">
         <text>限制空间大小：{{limitSize}}KB </text>
         <text>当前占用空间大小：{{currentSize}}KB </text>
-        <image :src="actionSrc" />
+        <image class="icon-more" :src="moreSrc" @click="moreClick"/>
     </view>
-    <view class="input">
-        <input v-model="pin" maxlength="{{200}}" placeholder="请输入要修改的pin"/>
+     <view class="cell header">
+        <view class="storage-key">
+          <text class="text">KEY</text>
+        </view>
+        <view class="storage-value">
+          <text class="text">VALUE</text>
+        </view>
+      </view>
+    <scroller height="{{-1}}">
+      <view
+        class="cell"
+        v-for="storage in storages"
+      >
+        <checkbox
+          v-if="isDeleteMode"
+          checked="{{storage.checked}}"
+          @change="checkChange"
+          data-key="{{storage.key}}"
+          >
+        </checkbox>
+        <view class="storage-key">
+          <text class="text">{{storage.key}}</text>
+        </view>
+        <view class="storage-value">
+          <text class="text">{{storage.value}}</text>
+        </view>
+        <image v-if="!isDeleteMode" class="icon-edit" 
+          :src="editSrc" 
+          @click="editClick"
+          data-key="{{storage.key}}"
+          data-value="{{storage.value}}"
+          />
+      </view>
+    </scroller>
+    <c-popup 
+      show="{{isShowPopup}}"
+      position="bottom"
+      mask="{{true}}"
+      @close="popupClose">
+      <view class="edit-popup">
+        <view class="header">{{isEditMode ? '修改Storage' : '新增Storage'}}</view>
+        <view class="label">{{'键名：Key' + (isEditMode ? ' (不可修改)' :'')}}</view>
+        <input 
+          v-model="curKey" 
+          placeholder="请输入键名" 
+          :disabled="isEditMode"
+          @confirm="addStorage"/>
+        <view class="label">键值：Value</view>
+        <input 
+          v-model="curValue"  
+          placeholder="请输入键值"
+          @confirm="addStorage"/>
+      </view>
+    </c-popup>
+    <view v-if="isShowMask" class="mask" @click="maskClick">
+      <view class="action-list">
+        <View class="arrow"></View>
+        <View class="action-item" @click="addClick">
+          <image src="{{addSrc}}"></image>
+          新增
+        </View>
+        <View class="action-item" @click="deleteClick">
+          <image src="{{deleteSrc}}"></image>
+          删除
+        </View>
+        <View class="action-item" @click="clearClick">
+          <image src="{{clearSrc}}"></image>
+          清除全部
+        </View>
+      </view>
     </view>
-    <button
-      class="confirm-btn"
+    <view v-if="isDeleteMode" class="delete-actions">
+      <button
+        class="cancel-btn"
+        type="white"
+        text="取消"
+        @click="cancelDelClick"
+      />
+      <button
+        class="confirm-btn"
         type="red"
-        text="确认修改"
-        @tap="confirmClick"
-    />
+        disabled="{{!hasSelected}}"
+        text="删除"
+        @click="confirmDelClick"
+      />
+    </view>
   </view>
 </template>
 
@@ -23,36 +100,148 @@ import store from '../../store'
 
 class Index  {
   data = {
+    isDeleteMode: false,
+    isEditMode: false,
+    isShowMask: false,
+    isShowPopup: false,
     limitSize : '',
     currentSize: '',
     storages: [],
-    actionSrc: require('../../assets/images/more-icon.png')
+    curKey: '',
+    curValue: '',
+    moreSrc: require('../../assets/images/more-icon.png'),
+    editSrc: require('../../assets/images/storage-modify.png'),
+    addSrc: require('../../assets/images/storage-add.png'),
+    deleteSrc: require('../../assets/images/storage-delete.png'),
+    clearSrc: require('../../assets/images/storage-clear.png'),
   }
-  methods = {
-    confirmClick() {
-      store.commit('setUserPin', this.data.pin)
-    },
 
-    getStorageInfo() {
-        if(wx) {
-            const {keys, limitSize, currentSize} = wx.getStorageInfoSync()
-
-            const stors = []
-            keys.forEach(key => {
-                cml.getStorage(key).then((value) => {
-                    stors.push({key, value})
-                })
-            })
-                    
-            this.setData({
-                limitSize,
-                currentSize,
-                keys
-            })
-        }
+  computed = {
+    hasSelected() {
+      return this.storages.filter(storage => storage.checked === true).length > 0
     }
   }
-  created(){
+
+  methods = {
+    getStorageInfo() {
+      if(wx) {
+        const that = this
+        const {keys, limitSize, currentSize} = wx.getStorageInfoSync()
+
+        that.storages = []
+        keys.forEach(key => {
+            cml.getStorage(key).then((value) => {
+                that.storages.push({key, value, checked: false})
+            })
+        })
+        this.limitSize = limitSize
+        this.currentSize = currentSize
+      }
+    },
+
+    moreClick() {
+      this.isShowMask = true
+    },
+
+    checkChange(e) {
+      const { target: {dataset: {key}}, detail: {value} } = e
+      this.storages.forEach(storage => {
+        if( storage.key === key ) {
+          storage.checked = value === true
+        }
+      })
+    },
+
+    maskClick() {
+      this.isShowMask = false
+    },
+
+    editClick(e) {
+      const { target: { dataset: { key, value }}} = e
+      this.curKey = key
+      this.curValue = value
+      this.isEditMode = true
+      this.isShowPopup = true
+    },
+
+    addClick() {
+      this.curKey = ''
+      this.curValue = ''
+      this.isEditMode = false
+      this.isShowPopup = true
+    },
+
+    popupClose() {
+      this.isShowPopup = false
+    },
+
+    addStorage() {
+      try{
+        cml.setStorage(this.curKey, JSON.parse(this.curValue))
+        this.isShowPopup = false
+        this.getStorageInfo()
+      } catch (e) {
+        cml.alert({
+          message: (this.isEditMode ? '修改' : '新增') + '缓存失败，请检查输入内容（JSON格式）',
+          confirmTitle: '提示',
+        }).then(() => {
+          updateManager.applyUpdate()
+        })
+      }
+    },
+
+    deleteClick() {
+      this.isDeleteMode = true
+    },
+
+    cancelDelClick() {
+      this.storages.forEach(storage => {
+        storage.checked = false
+      })
+      this.isDeleteMode = false
+    },
+
+    confirmDelClick() {
+      if (this.hasSelected !== true) {
+        return
+      }
+      cml.confirm({
+          message: '确定要清除所选缓存吗？',
+          confirmTitle: '确定',
+          cancelTitle: '取消',
+        })
+        .then(value => {
+          if(value === '确定') {
+            const removes = []
+            this.storages.forEach(storage => {
+              if( storage.checked === true ){
+                removes.push(cml.removeStorage(storage.key))
+              }
+            })
+            Promise.all(removes).then(() => {
+              this.getStorageInfo()
+            })
+          }
+        })
+    },
+
+    clearClick() {
+      cml.confirm({
+          message: '确定要清除全部缓存吗？',
+          confirmTitle: '确定',
+          cancelTitle: '取消',
+        })
+        .then(value => {
+          if(value === '确定') {
+            this.storages.forEach(storage => {
+              cml.removeStorage(storage.key)
+            })
+          }
+        })
+    }
+  }
+
+  created() {
      this.getStorageInfo()
   }
 }
@@ -65,33 +254,150 @@ export default new Index()
 }
 
 .title {
-    display: flex;
-    justify-content: space-between;
-    border-top: 1px solid #eee;
-    border-bottom: 1px solid #eee;
-    padding: 24cpx;
+  display: flex;
+  justify-content: space-between;
+  padding: 24cpx;
 }
 
-.input input{
-  border: 0;
+.icon-more {
+  position: absolute;
+  top: 34cpx;
+  right: 34cpx;
+  width: 50cpx;
+  height: 50cpx;
 }
 
-.confirm-btn {
-  position: fixed;
-  bottom: 30cpx;
-  left: 30cpx;
-  width: 690cpx;
-  height: 100cpx;
-  border: 0;
-  color:#ffffff;
-  line-height: 100cpx;
+.cell {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  padding: 20cpx 10cpx;
+  border-bottom: 1cpx solid #eee;
+}
+
+.cell .cml-view {
+  justify-content: center;
+}
+
+.cell.header .text {
   font-size: 32cpx;
-  text-align: center;
+  font-weight: bold;
+}
+
+.cell .text {
+  white-space: nowrap;
+  font-size: 28cpx;
+  overflow-x: auto;
+  padding: 0 10cpx;
+}
+
+.cell .storage-key {
+  width: 30%;
+}
+
+.cell .storage-value {
+  width: 70%;
+}
+
+.cell .icon-edit {
+  position: absolute;
+  top: 20cpx;
+  right: 20cpx;
+  width: 40cpx;
+  height: 40cpx;
+}
+
+.mask {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 10;
+}
+
+.mask .action-list {
+  position: absolute;
+  width: 240cpx;
+  font-size: 28cpx;
+  background: #fff;
+  border-radius: 2cpx;
+  box-sizing: border-box;
+  right: 20cpx;
+  top: 120cpx;
+  z-index: 99;
+}
+
+.mask .arrow {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border: 16cpx solid;
+  border-color: transparent transparent #fff;
+  right: 20cpx;
+  top: -30cpx;   
+}
+
+.mask .action-item {
+  width: 100%;
+  height: 72cpx;
+  line-height: 72cpx;
+  border-bottom: 1cpx solid #efefef;
+}
+
+.mask .action-item image {
+  height: 40cpx;
+  width: 40cpx;
+  vertical-align: middle;
+  margin: 0 20cpx;
+}
+
+.delete-actions {
+  display: flex;
+  position: fixed;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-evenly; 
+  bottom: 30cpx;
+  left: 0;
+}
+
+.delete-actions .cancel-btn {
+  width: 224cpx;
+}
+
+.delete-actions .confirm-btn {
+  width: 430cpx;
+}
+
+.edit-popup {
+  background: #fff;
+  padding-bottom: 40cpx;
+}
+
+.edit-popup .header {
+  background: #eee;
+  padding: 20cpx;
+  font-size: 32cpx;
+}
+
+.edit-popup .label {
+  padding: 40cpx 20cpx 20cpx;
+}
+
+.edit-popup input {
+  border: 0;
+  border-bottom: 1cpx solid #ccc;
 }
 
 </style>
 <script cml-type="json">
 {
-
+  "base": {
+      "usingComponents": {
+          "c-popup": "cml-ui/components/c-popup/c-popup"
+      }
+  }
 }
 </script>

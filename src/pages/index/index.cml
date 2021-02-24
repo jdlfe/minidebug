@@ -27,6 +27,7 @@
         active="{{currentEnv}}"
         cancel-txt="取消"
         @select="envActionSelect"
+        @cancel="envActionCancel"
       ></c-actionsheet>
   </page>
 </template>
@@ -74,9 +75,7 @@ class Index  {
     },
 
     handleEnvChange() {
-      this.setData({
-        showEnvAction: true
-      })
+      this.showEnvAction = true
     },
 
     envActionSelect(evt) {
@@ -94,10 +93,12 @@ class Index  {
             })
         }
       )
-      this.setData({
-        showEnvAction: false,
-        currentEnv: index
-      })
+      this.showEnvAction = false
+      this.currentEnv = index
+    },
+
+    envActionCancel() {
+      this.showEnvAction = false
     },
 
     handleUpdate() {
