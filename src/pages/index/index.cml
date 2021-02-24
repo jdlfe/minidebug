@@ -11,6 +11,10 @@
           <view class="feature" v-for="feature in features" :key="feature.type" @tap="featureClick" data-feature="{{feature}}">
             <text class="title">{{feature.title}}</text>
             <text class="desc">{{feature.desc}}</text>
+            <image
+              class="arrow-img"
+              src="{{arrowImg}}"
+            ></image>
           </view>
         </scroller>
       </view>
@@ -41,6 +45,7 @@ class Index  {
     FEATURE,
     title: '首页',
     backImg: require('../../assets/images/back.png'),
+    arrowImg: require('../../assets/images/right-arrow.png'),
     features: HOME_MENU,
     current: FEATURE.DEFAULT,
     showEnvAction: false,
@@ -143,6 +148,7 @@ export default new Index()
 </script>
 <style scoped>
 .feature{
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -172,9 +178,16 @@ export default new Index()
 	background-color: #FFFFFF;
 }
 .back-img {
-		width: 60cpx;
-		height: 60cpx;
-	}
+  width: 60cpx;
+  height: 60cpx;
+}
+.arrow-img {
+  position: absolute;
+  top: 40cpx;
+  right: 20cpx;
+  width: 20cpx;
+  height: 40cpx;
+}
 
 </style>
 <script cml-type="json">
