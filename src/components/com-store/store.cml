@@ -61,19 +61,19 @@
     </c-popup>
     <view v-if="isShowMask" class="mask" @click="maskClick">
       <view class="action-list">
-        <View class="arrow"></View>
-        <View class="action-item" @click="addClick">
+        <view class="arrow"></view>
+        <view class="action-item" @click="addClick">
           <image src="{{addSrc}}"></image>
           新增
-        </View>
-        <View class="action-item" @click="deleteClick">
+        </view>
+        <view class="action-item" @click="deleteClick">
           <image src="{{deleteSrc}}"></image>
           删除
-        </View>
-        <View class="action-item" @click="clearClick">
+        </view>
+        <view class="action-item" @click="clearClick">
           <image src="{{clearSrc}}"></image>
           清除全部
-        </View>
+        </view>
       </view>
     </view>
     <view v-if="isDeleteMode" class="delete-actions">
@@ -95,7 +95,7 @@
 </template>
 
 <script>
-import cml from 'chameleon-api'
+import cml from '../../utils/extendCml.js'
 import store from '../../store'
 
 class Index  {
@@ -124,19 +124,17 @@ class Index  {
 
   methods = {
     getStorageInfo() {
-      if(wx) {
-        const that = this
-        const {keys, limitSize, currentSize} = wx.getStorageInfoSync()
+      const that = this
+      const {keys, limitSize, currentSize} = cml.getStorageInfoSync()
 
-        that.storages = []
-        keys.forEach(key => {
-            cml.getStorage(key).then((value) => {
-                that.storages.push({key, value, checked: false})
-            })
-        })
-        this.limitSize = limitSize
-        this.currentSize = currentSize
-      }
+      that.storages = []
+      keys.forEach(key => {
+          cml.getStorage(key).then((value) => {
+              that.storages.push({key, value, checked: false})
+          })
+      })
+      this.limitSize = limitSize
+      this.currentSize = currentSize
     },
 
     moreClick() {

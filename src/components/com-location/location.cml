@@ -16,61 +16,83 @@
 </template>
 
 <script>
-import cml from 'chameleon-api'
+import cml from '../../utils/extendCml.js'
 import store from '../../store'
 
 class Index  {
   data = {
-      currentLat: '',
-      currentLong: ''
+    initLat: null,
+    initLong: null,
+    currentLat: '',
+    currentLong: ''
   }
  
   methods = {
-    getCurrentPosition(){
-        const that = this
-        wx && wx.getLocation({
-            type: 'gcj-02',
-            success: res => {
-                that.setData({
-                    currentLat: res.latitude,
-                    currentLong: res.longitude
-                })
-            }
-        })
+    getCurrentPosition(isInit){
+      const that = this
+      cml.getLocation({
+        type: 'gcj-02',
+        success: res => {
+          that.currentLat = res.latitude
+          that.currentLong = res.longitude
+          if(isInit === true) {
+            that.initLat = that.currentLat
+            that.initLong = that.currentLong
+          }
+        }
+      })
     },
 
       // 查看我的位置
     viewLocationClick() {
-        wx && wx.getLocation({
-            type: 'gcj-02',
-            success: res => {
-                wx.openLocation({
-                    latitude: res.latitude,
-                    longitude: res.longitude,
-                    scale: 18
-                })
-            }
-        })
+      cml.getLocation({
+        type: 'gcj-02',
+        success: res => {
+          cml.openLocation({
+              latitude: res.latitude,
+              longitude: res.longitude,
+              scale: 18
+          })
+        }
+      })
     },
 
     choseLocationClick() {
-        const that = this
-        wx && wx.chooseLocation({
-            success: res => {
-                that.setData({
-                  currentLat: res.latitude,
-                  currentLong: res.longitude
-              })
+      const that = this
+      cml.chooseLocation({
+        success: res => {
+          that.currentLat = res.latitude
+          that.currentLong = res.longitude
+          Object.defineProperty(cml, 'getLocation', {
+            get() {
+              return function(obj) {
+                obj.success({ latitude: res.latitude, longitude: res.longitude })
+              }
             }
-        })
+          })
+          cml.showToast({message: '位置修改成功！'})
+        }
+      })
     },
 
     resetLocationClick() {
-        
+      if (!this.initLat || !this.initLong) {
+        cml.showToast({message: '初始地址获取失败'})
+        return
+      }
+      const that = this
+      Object.defineProperty(cml, 'getLocation', {
+        get() {
+          return function(obj) {
+            obj.success({ latitude: that.initLat, longitude: that.initLong })
+          }
+        }
+      })
+      cml.showToast({message: '还原成功！'})
     }
   }
   created(){
-     this.getCurrentPosition()
+     this.getCurrentPosition(true)
   }
 }
 

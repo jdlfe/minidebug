@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import cml from 'chameleon-api'
+import cml from '../../utils/extendCml.js'
 import { transSystemInfo, transUserInfo, transAuthInfo } from '../../utils/util.js'
 
 class Index  {
@@ -35,13 +35,13 @@ class Index  {
   }
   methods = {
     scanClick() {
-        wx && wx.scanCode({
-            success: (res) => {
-                if(res.path){
-                    this.jumpUrl = path
-                }
-            }
-        })
+      cml.scanCode({
+          success: (res) => {
+              if(res.path){
+                  this.jumpUrl = path
+              }
+          }
+      })
     },
 
     historyClick(event){
@@ -65,19 +65,19 @@ class Index  {
     },
 
     storageUrl(){
-        if(this.historyList.indexOf(this.jumpUrl) > -1) {
-            return
-        }
-        const list = [...this.historyList, this.jumpUrl]
-        this.historyList.unshift(this.jumpUrl)
-        if (this.historyList.length > 5) {
-            this.historyList.pop()
-        }
-        cml.setStorage('minidebug-h5-history', this.historyList)
+      if(this.historyList.indexOf(this.jumpUrl) > -1) {
+          return
+      }
+      const list = [...this.historyList, this.jumpUrl]
+      this.historyList.unshift(this.jumpUrl)
+      if (this.historyList.length > 5) {
+          this.historyList.pop()
+      }
+      cml.setStorage('minidebug-h5-history', this.historyList)
     },
   }
   created(){
-   cml.getStorage('minidebug-h5-history').then((res)=>{
+    cml.getStorage('minidebug-h5-history').then((res)=>{
       this.historyList = res
     }, (err)=> {
       this.historyList = []

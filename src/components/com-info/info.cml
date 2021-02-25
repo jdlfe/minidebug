@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import cml from 'chameleon-api'
+import cml from '../../utils/extendCml.js'
 import { transSystemInfo, transUserInfo, transAuthInfo } from '../../utils/util.js'
 
 class Index  {
@@ -47,14 +47,14 @@ class Index  {
     },
 
     getAccountInfo() {
-      wx && this.accountInfoList.push({
+      this.accountInfoList.push({
         name: '小程序APPID',
-        value: wx.getAccountInfoSync().miniProgram.appId
+        value: cml.getAccountInfoSync().miniProgram.appId
       })
     },
 
     getUserInfo(){
-      wx && wx.getUserInfo({
+      cml.getUserInfo({
         success: (info) => {
           console.log(info)
           this.userInfoList = transUserInfo(info.userInfo)
@@ -63,7 +63,7 @@ class Index  {
     },
 
     getAuthInfo() {
-      wx && wx.getSetting({
+      cml.getSetting({
         success: (info) => {
           this.authInfoList = transAuthInfo(info.authSetting)
         }

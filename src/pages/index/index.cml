@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import cml from 'chameleon-api'
+import cml from '../../utils/extendCml.js'
 import { FEATURE, HOME_MENU } from '../../utils/constants'
 
 class Index  {
@@ -107,10 +107,7 @@ class Index  {
     },
 
     handleUpdate() {
-      if(!wx) {
-        return
-      }
-      const updateManager = wx.getUpdateManager()
+      const updateManager = cml.getUpdateManager()
       updateManager.onCheckForUpdate((res) => {
         if (res && !res.hasUpdate) {
           // 请求完新版本信息的回调
@@ -134,7 +131,7 @@ class Index  {
     },
 
     handleScan() {
-      wx && wx.scanCode({
+      cml.scanCode({
         success: (res) => {
           console.log('scan result...', res)
           res.path && cml.redirectTo({ path:`/${res.path}` })
