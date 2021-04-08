@@ -1,0 +1,77 @@
+<template lang="vue">
+  <view class="container">
+    <view class="title">
+        <text>当前用户pin：{{userPin}} </text>
+    </view>
+    <view class="input">
+        <input v-model="pin" maxlength="{{200}}" placeholder="请输入要修改的pin"/>
+    </view>
+    
+    <button
+      class="confirm-btn"
+        type="red"
+        text="确认修改"
+        @tap="confirmClick"
+    />
+  </view>
+</template>
+
+<script>
+import cml from 'chameleon-api'
+import store from '../../store'
+
+class Index  {
+  data = {
+      pin: ''
+  }
+  computed = {
+    userPin() {
+        return store.state.userPin
+    }
+  }
+  methods = {
+    confirmClick() {
+      store.commit('setUserPin', this.data.pin)
+    }
+  }
+  created(){
+     
+  }
+}
+
+export default new Index()
+</script>
+<style scoped>
+.container {
+  height: 100%;
+}
+
+.title,.input {
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+    padding: 24cpx;
+}
+
+.input input{
+  border: 0;
+}
+
+.confirm-btn {
+  position: fixed;
+  bottom: 30cpx;
+  left: 30cpx;
+  width: 690cpx;
+  height: 100cpx;
+  border: 0;
+  color:#ffffff;
+  line-height: 100cpx;
+  font-size: 32cpx;
+  text-align: center;
+}
+
+</style>
+<script cml-type="json">
+{
+
+}
+</script>

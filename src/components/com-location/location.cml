@@ -1,0 +1,134 @@
+<template lang="vue">
+  <view class="container">
+    <view class="title" @tap="viewLocationClick">
+        <text>查看我的位置</text>
+    </view>
+    <view class="title" @tap="choseLocationClick">
+        <text>选择我的位置</text>
+    </view>
+    <view class="title" @tap="resetLocationClick">
+        <text>还原位置</text>
+    </view>
+    <view class="title">
+        <text>精准地址转换</text>
+    </view>
+  </view>
+</template>
+
+<script>
+import cml from '../../utils/extendCml.js'
+import store from '../../store'
+
+class Index  {
+  data = {
+    initLat: null,
+    initLong: null,
+    currentLat: '',
+    currentLong: ''
+  }
+ 
+  methods = {
+    getCurrentPosition(isInit){
+      const that = this
+      cml.getLocation({
+        type: 'gcj-02',
+        success: res => {
+          that.currentLat = res.latitude
+          that.currentLong = res.longitude
+          if(isInit === true) {
+            that.initLat = that.currentLat
+            that.initLong = that.currentLong
+          }
+        }
+      })
+    },
+
+      // 查看我的位置
+    viewLocationClick() {
+      cml.getLocation({
+        type: 'gcj-02',
+        success: res => {
+          cml.openLocation({
+              latitude: res.latitude,
+              longitude: res.longitude,
+              scale: 18
+          })
+        }
+      })
+    },
+
+    choseLocationClick() {
+      const that = this
+      cml.chooseLocation({
+        success: res => {
+          that.currentLat = res.latitude
+          that.currentLong = res.longitude
+          Object.defineProperty(cml, 'getLocation', {
+            get() {
+              return function(obj) {
+                obj.success({ latitude: res.latitude, longitude: res.longitude })
+              }
+            }
+          })
+          cml.showToast({message: '位置修改成功！'})
+        }
+      })
+    },
+
+    resetLocationClick() {
+      if (!this.initLat || !this.initLong) {
+        cml.showToast({message: '初始地址获取失败'})
+        return
+      }
+      const that = this
+      Object.defineProperty(cml, 'getLocation', {
+        get() {
+          return function(obj) {
+            obj.success({ latitude: that.initLat, longitude: that.initLong })
+          }
+        }
+      })
+      cml.showToast({message: '还原成功！'})
+    }
+  }
+  created(){
+     this.getCurrentPosition(true)
+  }
+}
+
+export default new Index()
+</script>
+<style scoped>
+.container {
+  height: 100%;
+}
+
+.title,.input {
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+    padding: 24cpx;
+}
+
+.input input{
+  border: 0;
+}
+
+.confirm-btn {
+  position: fixed;
+  bottom: 30cpx;
+  left: 30cpx;
+  width: 690cpx;
+  height: 100cpx;
+  border: 0;
+  color:#ffffff;
+  line-height: 100cpx;
+  font-size: 32cpx;
+  text-align: center;
+}
+
+</style>
+<script cml-type="json">
+{
+
+}
+</script>

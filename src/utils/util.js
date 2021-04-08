@@ -1,24 +1,4 @@
-import Taro from '@tarojs/taro'
 
-export const handleGoPage = url => {
-  Taro.navigateTo({
-    url
-  })
-}
-export const relaunch = ({ title = '提示', content, confirmText = '知道了', showCancel = false, cancelText = '', }) => {
-  Taro.showModal({
-    title,
-    content,
-    confirmText,
-    showCancel,
-    cancelText,
-    success: res => {
-      if (res.confirm) {
-        Taro.reLaunch({ url: '/pages/index/index' })
-      }
-    }
-  })
-}
 /**
  *  将WGS-84(国际标准)转为GCJ-02(火星坐标):
  */
