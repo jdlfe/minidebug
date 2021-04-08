@@ -15,7 +15,9 @@ import Storage from '../../components/storage/Storage'
 
 const app = Taro.getApp()
 
-type PageStateProps = {}
+type PageStateProps = {
+  HOME_PAGE: string
+}
 
 type PageDispatchProps = {}
 
@@ -135,6 +137,7 @@ class Debug extends Component {
 
   }
   handleChangeEnv = (env) => {
+    const that = this;
     Taro.setStorage({
       key: 'env',
       data: env,
@@ -148,7 +151,7 @@ class Debug extends Component {
             if (res.confirm) {
               // reLaunch不走app.js了
               Taro.getApp().needResetHttp = true
-              Taro.reLaunch({ url: '/pages/index/index' })
+              Taro.reLaunch({ url: that.props.HOME_PAGE || '/pages/index/index' })
             }
           }
         })
