@@ -13,6 +13,7 @@ const methods = [
 ]
 
 methods.forEach((method) => {
+  // 暂时只扩展微信小程序
   if (typeof cml.default[method] !== 'function' && wx) {
     cml.default[method] = wx[method]
   }
