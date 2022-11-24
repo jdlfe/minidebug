@@ -250,7 +250,7 @@ resetHttp() {
 ## F&Q
 ### 1. taro1.x版本，构建后提示“Error: File to import not found or unreadable: ~@jdlfe/minidebug/src/app.scss.”
 原因是找不到minidebug的样式文件，需要在config/index配置文件新增sass配置，参考配置如下：
-```
+```javascript
 const path = require('path')
 const sassImporter = function(url) {
   if (url[0] === '~' && url[1] !== '/' && (url.includes('minidebug') || url.includes('taro-ui'))) {
